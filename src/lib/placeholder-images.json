@@ -1,3 +1,38 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero",
+      "description": "A dramatic shot of a volleyball court, ready for a match.",
+      "imageUrl": "https://images.unsplash.com/photo-1666901356149-93f2eb3ba5a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx2b2xsZXliYWxsJTIwY291cnR8ZW58MHx8fHwxNzY2MDc3NzI3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "volleyball court"
+    },
+    {
+      "id": "gallery-1",
+      "description": "A player spiking the volleyball over the net.",
+      "imageUrl": "https://images.unsplash.com/photo-1765109371543-1039e5648184?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx2b2xsZXliYWxsJTIwYWN0aW9ufGVufDB8fHx8MTc2NjE0Njk1NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "volleyball action",
+      "caption": "Fierce Competition"
+    },
+    {
+      "id": "gallery-2",
+      "description": "A volleyball team in a huddle.",
+      "imageUrl": "https://images.unsplash.com/photo-1765109326731-1da87c9571c7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8dm9sbGV5YmFsbCUyMHRlYW18ZW58MHx8fHwxNzY2MTQ2OTU1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "volleyball team",
+      "caption": "Team Spirit"
+    },
+    {
+      "id": "gallery-3",
+      "description": "Players celebrating a point.",
+      "imageUrl": "https://images.unsplash.com/photo-1765109375988-912ce5ba5ffd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx2b2xsZXliYWxsJTIwY2VsZWJyYXRpb258ZW58MHx8fHwxNzY2MTQ2OTU1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "volleyball celebration",
+      "caption": "Victory Moment"
+    },
+    {
+      "id": "gallery-4",
+      "description": "A close-up of a player serving the ball.",
+      "imageUrl": "https://images.unsplash.com/photo-1745357228744-9b6a9e6ed827?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx2b2xsZXliYWxsJTIwc2VydmV8ZW58MHx8fHwxNzY2MTQ2OTU1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "volleyball serve",
+      "caption": "Focused Power"
+    }
+  ]
 }

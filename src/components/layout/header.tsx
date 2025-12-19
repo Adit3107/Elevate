@@ -1,0 +1,80 @@
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import VolleyballIcon from '@/components/icons/volleyball';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Menu } from 'lucide-react';
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/teams', label: 'Teams' },
+  { href: '/fixtures', label: 'Fixtures' },
+  { href: '/results', label: 'Results' },
+  { href: '/announcements', label: 'Announcements' },
+  { href: '/gallery', label: 'Gallery' },
+  { href: '/analyze', label: 'AI Analysis' },
+];
+
+export default function Header() {
+  return (
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center">
+        <div className="mr-4 hidden md:flex">
+          <Link href="/" className="mr-6 flex items-center space-x-2">
+            <VolleyballIcon className="h-6 w-6 text-primary" />
+            <span className="hidden font-bold sm:inline-block font-headline">
+              Elevate Hub
+            </span>
+          </Link>
+          <nav className="flex items-center space-x-6 text-sm font-medium">
+            {navLinks.map(link => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="transition-colors hover:text-foreground/80 text-foreground/60"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              aria-label="Open mobile menu"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left">
+            <Link href="/" className="mr-6 flex items-center space-x-2 mb-6">
+              <VolleyballIcon className="h-6 w-6 text-primary" />
+              <span className="font-bold font-headline">Elevate Hub</span>
+            </Link>
+            <nav className="flex flex-col space-y-4">
+              {navLinks.map(link => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="transition-colors hover:text-foreground/80 text-foreground/60"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </SheetContent>
+        </Sheet>
+        
+        <div className="flex flex-1 items-center justify-end space-x-2">
+          {/* We'll add user-specific buttons here later using Clerk */}
+          <Button asChild>
+            <Link href="/sign-in">Login</Link>
+          </Button>
+        </div>
+      </div>
+    </header>
+  );
+}
