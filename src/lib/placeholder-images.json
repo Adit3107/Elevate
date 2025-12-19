@@ -2,9 +2,9 @@
   "placeholderImages": [
     {
       "id": "hero",
-      "description": "A dramatic shot of a volleyball court, ready for a match.",
-      "imageUrl": "https://images.unsplash.com/photo-1666901356149-93f2eb3ba5a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx2b2xsZXliYWxsJTIwY291cnR8ZW58MHx8fHwxNzY2MDc3NzI3fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "volleyball court"
+      "description": "A dramatic shot of a sports arena, ready for a match.",
+      "imageUrl": "https://images.unsplash.com/photo-1579952516518-6c21a0a2f3d1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzdGFkaXVtfGVufDB8fHx8MTc2NjE0NzAwMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "sports arena"
     },
     {
       "id": "gallery-1",
@@ -15,23 +15,23 @@
     },
     {
       "id": "gallery-2",
-      "description": "A volleyball team in a huddle.",
-      "imageUrl": "https://images.unsplash.com/photo-1765109326731-1da87c9571c7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8dm9sbGV5YmFsbCUyMHRlYW18ZW58MHx8fHwxNzY2MTQ2OTU1fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "volleyball team",
-      "caption": "Team Spirit"
+      "description": "A basketball player going for a slam dunk.",
+      "imageUrl": "https://images.unsplash.com/photo-1546519638-68e109498ffc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxiYXNrZXRiYWxsJTIwYWN0aW9ufGVufDB8fHx8MTc2NjE0NzAyNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "basketball action",
+      "caption": "Slam Dunk!"
     },
     {
       "id": "gallery-3",
-      "description": "Players celebrating a point.",
+      "description": "Players celebrating a point in volleyball.",
       "imageUrl": "https://images.unsplash.com/photo-1765109375988-912ce5ba5ffd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx2b2xsZXliYWxsJTIwY2VsZWJyYXRpb258ZW58MHx8fHwxNzY2MTQ2OTU1fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "volleyball celebration",
       "caption": "Victory Moment"
     },
     {
       "id": "gallery-4",
-      "description": "A close-up of a player serving the ball.",
-      "imageUrl": "https://images.unsplash.com/photo-1745357228744-9b6a9e6ed827?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx2b2xsZXliYWxsJTIwc2VydmV8ZW58MHx8fHwxNzY2MTQ2OTU1fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "volleyball serve",
+      "description": "A close-up of a player serving in table tennis.",
+      "imageUrl": "https://images.unsplash.com/photo-1520222980193-ea9615a761eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx0YWJsZSUyMHRlbm5pcyUyMHNlcnZlfGVufDB8fHx8MTc2NjE0NzAzNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "table tennis serve",
       "caption": "Focused Power"
     }
   ]

@@ -3,8 +3,11 @@ import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, Megaphone, Bot } from 'lucide-react';
+import { ArrowRight, Megaphone, Trophy } from 'lucide-react';
 import VolleyballIcon from '@/components/icons/volleyball';
+import BasketballIcon from '@/components/icons/basketball';
+import TableTennisIcon from '@/components/icons/table-tennis';
+
 
 export default function Home() {
   const heroImage = PlaceHolderImages.find(img => img.id === 'hero');
@@ -31,7 +34,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
         <div className="relative h-full flex flex-col items-center justify-center text-center p-4">
           <div className="flex items-center gap-4 mb-4">
-            <VolleyballIcon className="w-20 h-20 text-background" />
+             <Trophy className="w-20 h-20 text-background" />
             <div className="w-px h-16 bg-gray-400" />
             <div>
               <h1 className="font-headline text-5xl md:text-7xl font-extrabold tracking-tight text-background uppercase">Elevate</h1>
@@ -39,11 +42,11 @@ export default function Home() {
             </div>
           </div>
           <p className="mt-4 max-w-2xl text-lg text-gray-300">
-            The official hub for the premier inter-college volleyball tournament.
+            The official hub for the premier inter-college sports tournament.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Button asChild size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
-              <Link href="/register-team">Register Your Team</Link>
+              <Link href="/register">Register Your Team</Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10">
               <Link href="/fixtures">View Fixtures</Link>
@@ -53,54 +56,66 @@ export default function Home() {
       </section>
 
       <section className="bg-background py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto grid gap-12 lg:grid-cols-3 lg:gap-8">
-          
-          <div className="lg:col-span-2">
-            <h2 className="text-3xl font-headline font-bold tracking-tight sm:text-4xl text-primary">What's New</h2>
-            <div className="mt-6 space-y-6">
-              {announcements.map((ann) => (
-                <Card key={ann.id} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Megaphone className="w-6 h-6 text-accent" />
-                      {ann.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">{ann.content}</p>
-                  </CardContent>
-                  <CardFooter>
-                    <p className="text-sm text-muted-foreground">{ann.date}</p>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-          <div className="lg:col-span-1">
-             <Card className="bg-primary text-primary-foreground shadow-xl h-full flex flex-col">
+        <div className="max-w-7xl mx-auto">
+           <h2 className="text-3xl font-headline font-bold tracking-tight text-center sm:text-4xl text-primary">Compete Across Three Sports</h2>
+             <div className="mt-12 grid gap-8 md:grid-cols-3">
+            <Card className="text-center">
               <CardHeader>
-                <CardTitle className="flex items-center gap-3">
-                  <Bot className="w-8 h-8"/>
-                  <span className="text-2xl font-headline">AI-Powered Analysis</span>
-                </CardTitle>
+                <VolleyballIcon className="w-12 h-12 mx-auto text-primary" />
+                <CardTitle className="mt-4">Volleyball</CardTitle>
               </CardHeader>
-              <CardContent className="flex-grow">
-                <p>
-                  Ever wondered why a play gave a team the edge? Use our new GenAI tool to get instant, easy-to-understand explanations of complex volleyball plays.
-                </p>
+              <CardContent>
+                <p className="text-muted-foreground">Spike your way to victory in the classic court challenge.</p>
               </CardContent>
-              <CardFooter>
-                <Button asChild variant="secondary" className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90">
-                  <Link href="/analyze">Analyze a Play <ArrowRight className="ml-2 h-4 w-4" /></Link>
-                </Button>
-              </CardFooter>
+            </Card>
+            <Card className="text-center">
+              <CardHeader>
+                <BasketballIcon className="w-12 h-12 mx-auto text-primary" />
+                <CardTitle className="mt-4">Basketball</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">Dribble, shoot, and score in this fast-paced test of teamwork.</p>
+              </CardContent>
+            </Card>
+            <Card className="text-center">
+              <CardHeader>
+                <TableTennisIcon className="w-12 h-12 mx-auto text-primary" />
+                <CardTitle className="mt-4">Table Tennis</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">Experience the lightning-fast reflexes of table tennis.</p>
+              </CardContent>
             </Card>
           </div>
         </div>
       </section>
 
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-secondary">
+
+      <section className="bg-secondary py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-headline font-bold tracking-tight sm:text-4xl text-primary">What's New</h2>
+          <div className="mt-6 grid gap-6 md:grid-cols-2">
+            {announcements.map((ann) => (
+              <Card key={ann.id} className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Megaphone className="w-6 h-6 text-accent" />
+                    {ann.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">{ann.content}</p>
+                </CardContent>
+                <CardFooter>
+                  <p className="text-sm text-muted-foreground">{ann.date}</p>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-background">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-headline font-bold tracking-tight text-center sm:text-4xl text-primary">From the Gallery</h2>
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import VolleyballIcon from '@/components/icons/volleyball';
+import { Trophy } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
 
@@ -11,7 +11,6 @@ const navLinks = [
   { href: '/results', label: 'Results' },
   { href: '/announcements', label: 'Announcements' },
   { href: '/gallery', label: 'Gallery' },
-  { href: '/analyze', label: 'AI Analysis' },
 ];
 
 export default function Header() {
@@ -20,7 +19,7 @@ export default function Header() {
       <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <VolleyballIcon className="h-6 w-6 text-primary" />
+            <Trophy className="h-6 w-6 text-primary" />
             <span className="hidden font-bold sm:inline-block font-headline">
               Elevate Hub
             </span>
@@ -51,7 +50,7 @@ export default function Header() {
           </SheetTrigger>
           <SheetContent side="left">
             <Link href="/" className="mr-6 flex items-center space-x-2 mb-6">
-              <VolleyballIcon className="h-6 w-6 text-primary" />
+              <Trophy className="h-6 w-6 text-primary" />
               <span className="font-bold font-headline">Elevate Hub</span>
             </Link>
             <nav className="flex flex-col space-y-4">
