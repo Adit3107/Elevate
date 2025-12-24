@@ -34,7 +34,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
         <div className="relative h-full flex flex-col items-center justify-center text-center p-4">
           <div className="flex items-center gap-4 mb-4">
-             <Trophy className="w-20 h-20 text-background" />
+             <Trophy className="w-20 h-20 text-white" />
             <div className="w-px h-16 bg-gray-400" />
             <div>
               <h1 className="font-headline text-5xl md:text-7xl font-extrabold tracking-tight text-white uppercase">Elevate</h1>
