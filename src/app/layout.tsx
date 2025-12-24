@@ -5,7 +5,7 @@ import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 
 export const metadata: Metadata = {
-  title: 'Elevate Tournament Hub',
+  title: 'Elevate',
   description: 'Elevate – Rise Above All. The official hub for the inter-college volleyball tournament.',
 };
 
