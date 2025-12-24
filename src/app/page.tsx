@@ -37,7 +37,7 @@ export default function Home() {
              <Trophy className="w-20 h-20 text-background" />
             <div className="w-px h-16 bg-gray-400" />
             <div>
-              <h1 className="font-headline text-5xl md:text-7xl font-extrabold tracking-tight text-background uppercase">Elevate</h1>
+              <h1 className="font-headline text-5xl md:text-7xl font-extrabold tracking-tight text-white uppercase">Elevate</h1>
               <p className="font-headline text-xl md:text-2xl text-gray-200 tracking-wide">Rise Above All</p>
             </div>
           </div>

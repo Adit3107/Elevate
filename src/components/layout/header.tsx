@@ -1,11 +1,9 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Trophy } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
 
 const navLinks = [
-  { href: '/', label: 'Home' },
   { href: '/teams', label: 'Teams' },
   { href: '/fixtures', label: 'Fixtures' },
   { href: '/results', label: 'Results' },
@@ -19,9 +17,8 @@ export default function Header() {
       <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <Trophy className="h-6 w-6 text-primary" />
             <span className="hidden font-bold sm:inline-block font-headline">
-              Elevate Hub
+              Elevate
             </span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
@@ -50,8 +47,7 @@ export default function Header() {
           </SheetTrigger>
           <SheetContent side="left">
             <Link href="/" className="mr-6 flex items-center space-x-2 mb-6">
-              <Trophy className="h-6 w-6 text-primary" />
-              <span className="font-bold font-headline">Elevate Hub</span>
+              <span className="font-bold font-headline">Elevate</span>
             </Link>
             <nav className="flex flex-col space-y-4">
               {navLinks.map(link => (
