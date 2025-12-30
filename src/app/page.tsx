@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { ArrowRight, Megaphone, Trophy } from 'lucide-react';
 import VolleyballIcon from '@/components/icons/volleyball';
 import BasketballIcon from '@/components/icons/basketball';
-import TableTennisIcon from '@/components/icons/table-tennis';
+import CarromIcon from '@/components/icons/carrom';
 
 
 export default function Home() {
@@ -48,7 +48,7 @@ export default function Home() {
             <Button asChild size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
               <Link href="/register">Register Your Team</Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10">
+            <Button asChild size="lg" variant="outline" className="border-primary-foreground text-primary-foreground bg-black/20 hover:bg-primary-foreground/10">
               <Link href="/fixtures">View Fixtures</Link>
             </Button>
           </div>
@@ -79,11 +79,11 @@ export default function Home() {
             </Card>
             <Card className="text-center">
               <CardHeader>
-                <TableTennisIcon className="w-12 h-12 mx-auto text-primary" />
-                <CardTitle className="mt-4">Table Tennis</CardTitle>
+                <CarromIcon className="w-12 h-12 mx-auto text-primary" />
+                <CardTitle className="mt-4">Carrom</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">Experience the lightning-fast reflexes of table tennis.</p>
+                <p className="text-muted-foreground">Test your precision and strategy in the classic tabletop game.</p>
               </CardContent>
             </Card>
           </div>

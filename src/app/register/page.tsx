@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Trophy } from 'lucide-react';
 import VolleyballIcon from '@/components/icons/volleyball';
 import BasketballIcon from '@/components/icons/basketball';
-import TableTennisIcon from '@/components/icons/table-tennis';
+import CarromIcon from '@/components/icons/carrom';
 
 const sports = [
   {
@@ -20,10 +20,10 @@ const sports = [
     link: '/register/basketball',
   },
   {
-    name: 'Table Tennis',
-    icon: TableTennisIcon,
-    description: 'Register for the table tennis tournament.',
-    link: '/register/table-tennis',
+    name: 'Carrom',
+    icon: CarromIcon,
+    description: 'Register for the carrom tournament.',
+    link: '/register/carrom',
   },
 ];
 
