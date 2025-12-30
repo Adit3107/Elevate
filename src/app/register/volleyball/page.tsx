@@ -42,20 +42,12 @@ export default function VolleyballRegistrationPage() {
                  <h3 className="text-lg font-medium leading-6 text-primary">Team Information</h3>
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                     <div className="space-y-2">
-                        <Label htmlFor="college-name">College Name</Label>
-                        <Input id="college-name" placeholder="Enter your college name" />
+                        <Label htmlFor="team-name">Team Name (College Name)</Label>
+                        <Input id="team-name" placeholder="Enter your college name" />
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="captain-name">Captain Name</Label>
                         <Input id="captain-name" placeholder="Enter the captain's name" />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="contact-no">Contact No.</Label>
-                        <Input id="contact-no" type="tel" placeholder="Enter primary contact number" />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="alt-contact-no">Alternate Contact No.</Label>
-                        <Input id="alt-contact-no" type="tel" placeholder="Enter alternate contact number" />
                     </div>
                 </div>
             </div>

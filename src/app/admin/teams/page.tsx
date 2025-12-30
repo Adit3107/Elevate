@@ -9,19 +9,19 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 const dummyTeams = {
   volleyball: [
-    { id: 1, name: 'Spiking Spartans', college: 'State University' },
-    { id: 2, name: 'Net Ninjas', college: 'City College' },
-    { id: 3, name: 'Court Kings', college: 'Tech Institute' },
+    { id: 1, name: 'State University', captain: 'Alex Ray' },
+    { id: 2, name: 'City College', captain: 'Ben Carter' },
+    { id: 3, name: 'Tech Institute', captain: 'Casey Jones' },
   ],
   basketball: [
-    { id: 1, name: 'Dunking Dragons', college: 'Metro University' },
-    { id: 2, name: 'Hoop Heroes', college: 'Community College' },
-    { id: 3, name: 'Rebound Rulers', college: 'Arts Academy' },
+    { id: 1, name: 'Metro University', captain: 'Dylan Smith' },
+    { id: 2, name: 'Community College', captain: 'Evan Williams' },
+    { id: 3, name: 'Arts Academy', captain: 'Finn Brown' },
   ],
   carrom: [
-    { id: 1, name: 'Pocket Protectors', college: 'Science College' },
-    { id: 2, name: 'Striker Syndicate', college: 'Business School' },
-    { id: 3, name: 'Queen Collectors', college: 'Liberal Arts U' },
+    { id: 1, name: 'Science College', captain: 'Gale Hawthorne' },
+    { id: 2, name: 'Business School', captain: 'Harry Potter' },
+    { id: 3, name: 'Liberal Arts U', captain: 'Ian Wright' },
   ],
 };
 
@@ -42,14 +42,14 @@ export default function ManageTeamsPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Team Name</TableHead>
-                    <TableHead>College</TableHead>
+                    <TableHead>Captain Name</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {dummyTeams.volleyball.map((team) => (
                     <TableRow key={team.id}>
                       <TableCell className="font-medium">{team.name}</TableCell>
-                      <TableCell>{team.college}</TableCell>
+                      <TableCell>{team.captain}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -63,14 +63,14 @@ export default function ManageTeamsPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Team Name</TableHead>
-                    <TableHead>College</TableHead>
+                    <TableHead>Captain Name</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {dummyTeams.basketball.map((team) => (
                     <TableRow key={team.id}>
                       <TableCell className="font-medium">{team.name}</TableCell>
-                      <TableCell>{team.college}</TableCell>
+                      <TableCell>{team.captain}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -84,14 +84,14 @@ export default function ManageTeamsPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Team Name</TableHead>
-                    <TableHead>College</TableHead>
+                    <TableHead>Captain Name</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {dummyTeams.carrom.map((team) => (
                     <TableRow key={team.id}>
                       <TableCell className="font-medium">{team.name}</TableCell>
-                      <TableCell>{team.college}</TableCell>
+                      <TableCell>{team.captain}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
