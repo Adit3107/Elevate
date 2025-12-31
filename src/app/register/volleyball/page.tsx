@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+import Link from 'next/link';
 import {
   Card,
   CardContent,
@@ -17,11 +19,50 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, IndianRupee } from 'lucide-react';
 import VolleyballIcon from '@/components/icons/volleyball';
-import Link from 'next/link';
+import QRCode from "react-qr-code";
+
+const fees = {
+  men: 2000,
+  women: 1500,
+};
+
+type FormData = {
+    teamName: string;
+    captainName: string;
+    contactNo: string;
+    altContactNo: string;
+    category: 'men' | 'women' | '';
+};
+
 
 export default function VolleyballRegistrationPage() {
+    const [step, setStep] = useState(1);
+    const [formData, setFormData] = useState<FormData>({
+        teamName: '',
+        captainName: '',
+        contactNo: '',
+        altContactNo: '',
+        category: '',
+    });
+
+    const handleNext = () => {
+        // Basic validation
+        if (formData.teamName && formData.captainName && formData.contactNo && formData.category) {
+            setStep(2);
+        } else {
+            // You might want to show a toast or error messages here
+            alert('Please fill all required fields.');
+        }
+    };
+    
+    const upiId = 'your-upi-id@okhdfcbank'; // Replace with your actual UPI ID
+    const upiName = 'Elevate Org'; // Replace with your name
+    
+    const fee = formData.category ? fees[formData.category] : 0;
+    const upiUrl = `upi://pay?pa=${upiId}&pn=${upiName}&am=${fee}&cu=INR&tn=ElevateVolleyballRegistration`;
+
   return (
     <div className="container mx-auto max-w-4xl py-12 px-4">
        <div className="mb-8">
@@ -40,51 +81,84 @@ export default function VolleyballRegistrationPage() {
             Volleyball Tournament Registration
           </CardTitle>
           <CardDescription className="mt-2 text-lg">
-            Complete the form below to register your team. Player verification will be handled offline.
+            {step === 1 
+                ? 'Complete the form below to register your team. Player verification will be handled offline.'
+                : 'Scan the QR code to complete the payment and enter the transaction ID.'
+            }
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-8">
-            <div className="space-y-6 rounded-lg border p-6">
-                 <h3 className="text-lg font-medium leading-6 text-primary">Team Information</h3>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                    <div className="space-y-2">
-                        <Label htmlFor="team-name">Team Name (College Name)</Label>
-                        <Input id="team-name" placeholder="Enter your college name" />
+            {step === 1 && (
+                <form className="space-y-8" onSubmit={(e) => { e.preventDefault(); handleNext(); }}>
+                    <div className="space-y-6 rounded-lg border p-6">
+                        <h3 className="text-lg font-medium leading-6 text-primary">Team Information</h3>
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                            <div className="space-y-2">
+                                <Label htmlFor="team-name">Team Name (College Name)</Label>
+                                <Input id="team-name" placeholder="Enter your college name" value={formData.teamName} onChange={(e) => setFormData({...formData, teamName: e.target.value})} required />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="captain-name">Captain Name</Label>
+                                <Input id="captain-name" placeholder="Enter the captain's name" value={formData.captainName} onChange={(e) => setFormData({...formData, captainName: e.target.value})} required/>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="contact-no">Contact Number</Label>
+                                <Input id="contact-no" placeholder="Enter contact number" type="tel" value={formData.contactNo} onChange={(e) => setFormData({...formData, contactNo: e.target.value})} required/>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="alt-contact-no">Alternate Contact Number</Label>
+                                <Input id="alt-contact-no" placeholder="Enter alternate contact number" type="tel" value={formData.altContactNo} onChange={(e) => setFormData({...formData, altContactNo: e.target.value})}/>
+                            </div>
+                            <div className="space-y-2">
+                            <Label htmlFor="category">Category</Label>
+                            <Select onValueChange={(value: 'men' | 'women') => setFormData({...formData, category: value})} value={formData.category} required>
+                                <SelectTrigger id="category">
+                                    <SelectValue placeholder="Select category" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="men">Men</SelectItem>
+                                    <SelectItem value="women">Women</SelectItem>
+                                </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
                     </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="captain-name">Captain Name</Label>
-                        <Input id="captain-name" placeholder="Enter the captain's name" />
+
+                    <div className="flex justify-end">
+                    <Button type="submit" size="lg">
+                        Next
+                    </Button>
                     </div>
-                     <div className="space-y-2">
-                        <Label htmlFor="contact-no">Contact Number</Label>
-                        <Input id="contact-no" placeholder="Enter contact number" type="tel" />
-                    </div>
+                </form>
+            )}
+
+            {step === 2 && (
+                <div className="space-y-8">
+                     <div className="flex flex-col items-center justify-center space-y-6 rounded-lg border p-6">
+                        <h3 className="text-lg font-medium leading-6 text-primary">Payment</h3>
+                         <div className='text-center'>
+                            <p className="text-muted-foreground">Registration Fee</p>
+                            <p className="text-4xl font-bold flex items-center justify-center"><IndianRupee className="h-8 w-8" />{fee}</p>
+                         </div>
+                        <div className="p-4 bg-white rounded-lg">
+                            <QRCode value={upiUrl} size={200} />
+                        </div>
+                        <p className="text-sm text-muted-foreground text-center">Scan with any UPI app to pay.</p>
+                     </div>
+
                     <div className="space-y-2">
-                        <Label htmlFor="alt-contact-no">Alternate Contact Number</Label>
-                        <Input id="alt-contact-no" placeholder="Enter alternate contact number" type="tel" />
+                        <Label htmlFor="transaction-id">Transaction ID</Label>
+                        <Input id="transaction-id" placeholder="Enter the transaction ID from your UPI app" />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="category">Category</Label>
-                       <Select>
-                          <SelectTrigger id="category">
-                            <SelectValue placeholder="Select category" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="men">Men</SelectItem>
-                            <SelectItem value="women">Women</SelectItem>
-                          </SelectContent>
-                        </Select>
+
+                    <div className="flex justify-between">
+                        <Button variant="outline" onClick={() => setStep(1)}>Back</Button>
+                        <Button type="submit" size="lg">
+                            Submit Registration
+                        </Button>
                     </div>
                 </div>
-            </div>
-
-            <div className="flex justify-end">
-              <Button type="submit" size="lg">
-                Next
-              </Button>
-            </div>
-          </form>
+            )}
         </CardContent>
       </Card>
     </div>
