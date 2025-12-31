@@ -10,6 +10,13 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { ArrowLeft } from 'lucide-react';
 import VolleyballIcon from '@/components/icons/volleyball';
 import Link from 'next/link';
@@ -49,12 +56,32 @@ export default function VolleyballRegistrationPage() {
                         <Label htmlFor="captain-name">Captain Name</Label>
                         <Input id="captain-name" placeholder="Enter the captain's name" />
                     </div>
+                     <div className="space-y-2">
+                        <Label htmlFor="contact-no">Contact Number</Label>
+                        <Input id="contact-no" placeholder="Enter contact number" type="tel" />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="alt-contact-no">Alternate Contact Number</Label>
+                        <Input id="alt-contact-no" placeholder="Enter alternate contact number" type="tel" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="category">Category</Label>
+                       <Select>
+                          <SelectTrigger id="category">
+                            <SelectValue placeholder="Select category" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="men">Men</SelectItem>
+                            <SelectItem value="women">Women</SelectItem>
+                          </SelectContent>
+                        </Select>
+                    </div>
                 </div>
             </div>
 
             <div className="flex justify-end">
               <Button type="submit" size="lg">
-                Submit Registration
+                Next
               </Button>
             </div>
           </form>
