@@ -22,6 +22,7 @@ import {
 import { ArrowLeft, IndianRupee } from 'lucide-react';
 import VolleyballIcon from '@/components/icons/volleyball';
 import QRCode from "react-qr-code";
+import { useToast } from '@/hooks/use-toast';
 
 const fees = {
   men: 2000,
@@ -39,6 +40,7 @@ type FormData = {
 
 export default function VolleyballRegistrationPage() {
     const [step, setStep] = useState(1);
+    const { toast } = useToast();
     const [formData, setFormData] = useState<FormData>({
         teamName: '',
         captainName: '',
@@ -48,13 +50,27 @@ export default function VolleyballRegistrationPage() {
     });
 
     const handleNext = () => {
-        // Basic validation
-        if (formData.teamName && formData.captainName && formData.contactNo && formData.category) {
-            setStep(2);
-        } else {
-            // You might want to show a toast or error messages here
-            alert('Please fill all required fields.');
+        if (formData.teamName.length < 3) {
+            toast({ variant: 'destructive', description: 'Team Name must be at least 3 characters long.' });
+            return;
         }
+        if (formData.captainName.length < 3) {
+            toast({ variant: 'destructive', description: 'Captain Name must be at least 3 characters long.' });
+            return;
+        }
+        if (!/^\d{10}$/.test(formData.contactNo)) {
+            toast({ variant: 'destructive', description: 'Please enter a valid 10-digit contact number.' });
+            return;
+        }
+        if (formData.altContactNo && !/^\d{10}$/.test(formData.altContactNo)) {
+            toast({ variant: 'destructive', description: 'Please enter a valid 10-digit alternate contact number.' });
+            return;
+        }
+        if (!formData.category) {
+            toast({ variant: 'destructive', description: 'Please select a category.' });
+            return;
+        }
+        setStep(2);
     };
     
     const upiId = 'your-upi-id@okhdfcbank'; // Replace with your actual UPI ID
@@ -111,7 +127,7 @@ export default function VolleyballRegistrationPage() {
                             </div>
                             <div className="space-y-2">
                             <Label htmlFor="category">Category</Label>
-                            <Select onValueChange={(value: 'men' | 'women') => setFormData({...formData, category: value})} value={formData.category} required>
+                            <Select onValueChange={(value: 'men' | 'women') => setFormData({...formData, category: value})} value={formData.category}>
                                 <SelectTrigger id="category">
                                     <SelectValue placeholder="Select category" />
                                 </SelectTrigger>
