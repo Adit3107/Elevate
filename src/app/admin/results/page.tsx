@@ -40,6 +40,14 @@ import {
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { PlusCircle } from 'lucide-react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 const resultSchema = z.object({
   matchNo: z.string().min(1, 'Match number is required'),
@@ -56,6 +64,7 @@ type ResultFormData = z.infer<typeof resultSchema>;
 
 export default function ManageResultsPage() {
   const [isOpen, setIsOpen] = useState(false);
+  const [results, setResults] = useState<ResultFormData[]>([]);
   const { toast } = useToast();
 
   const form = useForm<ResultFormData>({
@@ -70,7 +79,7 @@ export default function ManageResultsPage() {
   });
 
   function onSubmit(data: ResultFormData) {
-    console.log(data); // In a real app, you'd save this to a database
+    setResults((prevResults) => [...prevResults, data]);
     toast({
       title: 'Result Added',
       description: `Result for Match #${data.matchNo} has been saved.`,
@@ -208,10 +217,37 @@ export default function ManageResultsPage() {
         </Dialog>
       </CardHeader>
       <CardContent>
-        <div className="text-center text-muted-foreground py-8">
-          <p>No results have been added yet.</p>
-          <p className="text-sm">Click "Add Result" to get started.</p>
-        </div>
+        {results.length === 0 ? (
+          <div className="text-center text-muted-foreground py-8">
+            <p>No results have been added yet.</p>
+            <p className="text-sm">Click "Add Result" to get started.</p>
+          </div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Match No.</TableHead>
+                <TableHead>Team A</TableHead>
+                <TableHead>Team B</TableHead>
+                <TableHead>Winner</TableHead>
+                <TableHead>Score</TableHead>
+                <TableHead>Type</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {results.map((result, index) => (
+                <TableRow key={index}>
+                  <TableCell>{result.matchNo}</TableCell>
+                  <TableCell>{result.teamA}</TableCell>
+                  <TableCell>{result.teamB}</TableCell>
+                  <TableCell className="font-medium">{result.winner}</TableCell>
+                  <TableCell>{result.score}</TableCell>
+                  <TableCell className="capitalize">{result.type}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </CardContent>
     </Card>
   );
