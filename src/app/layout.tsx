@@ -34,7 +34,8 @@ export default function RootLayout({
         <meta name="description" content="Elevate – Rise Above All. The official hub for the inter-college volleyball tournament." />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;600;700&family=Rajdhani:wght@700&display=swap" rel="stylesheet" />
+
       </head>
       <body className="font-body antialiased">
         <div className="flex min-h-screen flex-col">

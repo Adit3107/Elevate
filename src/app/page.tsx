@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, Megaphone, Trophy } from 'lucide-react';
+import { ArrowRight, Megaphone } from 'lucide-react';
 import VolleyballIcon from '@/components/icons/volleyball';
 import BasketballIcon from '@/components/icons/basketball';
 import CarromIcon from '@/components/icons/carrom';
@@ -14,13 +14,13 @@ export default function Home() {
   const galleryImages = PlaceHolderImages.filter(img => img.id.startsWith('gallery-'));
 
   const announcements = [
-    { id: 1, title: 'Registration Now Open!', content: 'Team registration for Elevate 2024 is officially open. Register your team now!', date: '2 days ago' },
+    { id: 1, title: 'Registration Now Open!', content: 'Team registration for Elevate 2026 is officially open. Register your team now!', date: '2 days ago' },
     { id: 2, title: 'Fixture Schedule Released', content: 'The first round of fixtures has been announced. Check the fixtures page for details.', date: '1 day ago' },
   ];
 
   return (
     <div className="flex flex-col">
-      <section className="relative w-full h-[60vh] text-primary-foreground">
+      <section className="relative w-full h-[75vh] text-primary-foreground">
         {heroImage && (
           <Image
             src={heroImage.imageUrl}
@@ -31,56 +31,54 @@ export default function Home() {
             data-ai-hint={heroImage.imageHint}
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
         <div className="relative h-full flex flex-col items-center justify-center text-center p-4">
-          <div className="flex items-center gap-4 mb-4">
-             <Trophy className="w-20 h-20 text-white" />
-            <div className="w-px h-16 bg-gray-400" />
-            <div>
-              <h1 className="font-headline text-5xl md:text-7xl font-extrabold tracking-tight text-white uppercase">Elevate</h1>
-              <p className="font-headline text-xl md:text-2xl text-gray-200 tracking-wide">Rise Above All</p>
-            </div>
-          </div>
-          <p className="mt-4 max-w-2xl text-lg text-gray-300">
+            <h1 className="font-headline text-7xl md:text-9xl font-extrabold tracking-tight text-white uppercase" style={{ WebkitTextStroke: '2px hsl(var(--primary))', textShadow: '0 0 15px hsl(var(--primary))' }}>
+              ELEVATE 2026
+            </h1>
+            <p className="font-body text-2xl md:text-4xl text-gray-200 tracking-wider font-semibold mt-2">
+              Rise. Compete. Conquer.
+            </p>
+          <p className="mt-6 max-w-2xl text-lg text-gray-300">
             The official hub for the premier inter-college sports tournament.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button asChild size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
+            <Button asChild size="lg">
               <Link href="/register">Register Your Team</Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-primary-foreground text-primary-foreground bg-black/20 hover:bg-primary-foreground/10">
+            <Button asChild size="lg" variant="outline">
               <Link href="/fixtures">View Fixtures</Link>
             </Button>
           </div>
         </div>
       </section>
 
-      <section className="bg-background py-16 px-4 sm:px-6 lg:px-8">
+      <section className="bg-background py-20 px-4 sm:px-6 lg:px-8 border-y-2 border-border">
         <div className="max-w-7xl mx-auto">
-           <h2 className="text-3xl font-headline font-bold tracking-tight text-center sm:text-4xl text-primary">Compete Across Three Sports</h2>
+           <h2 className="text-4xl font-headline font-bold tracking-tight text-center sm:text-5xl text-white uppercase">Compete Across Three Sports</h2>
              <div className="mt-12 grid gap-8 md:grid-cols-3">
-            <Card className="text-center">
+            <Card className="text-center bg-card/80 border-2 border-border hover:border-primary hover:-translate-y-2 transition-transform duration-300">
               <CardHeader>
-                <VolleyballIcon className="w-12 h-12 mx-auto text-primary" />
-                <CardTitle className="mt-4">Volleyball</CardTitle>
+                <VolleyballIcon className="w-16 h-16 mx-auto text-primary" />
+                <CardTitle className="mt-4 text-2xl font-headline uppercase">Volleyball</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">Spike your way to victory in the classic court challenge.</p>
               </CardContent>
             </Card>
-            <Card className="text-center">
+            <Card className="text-center bg-card/80 border-2 border-border hover:border-primary hover:-translate-y-2 transition-transform duration-300">
               <CardHeader>
-                <BasketballIcon className="w-12 h-12 mx-auto text-primary" />
-                <CardTitle className="mt-4">Basketball</CardTitle>
+                <BasketballIcon className="w-16 h-16 mx-auto text-primary" />
+                <CardTitle className="mt-4 text-2xl font-headline uppercase">Basketball</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">Dribble, shoot, and score in this fast-paced test of teamwork.</p>
               </CardContent>
             </Card>
-            <Card className="text-center">
+            <Card className="text-center bg-card/80 border-2 border-border hover:border-primary hover:-translate-y-2 transition-transform duration-300">
               <CardHeader>
-                <CarromIcon className="w-12 h-12 mx-auto text-primary" />
-                <CardTitle className="mt-4">Carrom</CardTitle>
+                <CarromIcon className="w-16 h-16 mx-auto text-primary" />
+                <CardTitle className="mt-4 text-2xl font-headline uppercase">Carrom</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">Test your precision and strategy in the classic tabletop game.</p>
@@ -91,16 +89,16 @@ export default function Home() {
       </section>
 
 
-      <section className="bg-secondary py-16 px-4 sm:px-6 lg:px-8">
+      <section className="bg-secondary py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-headline font-bold tracking-tight sm:text-4xl text-primary">What's New</h2>
-          <div className="mt-6 grid gap-6 md:grid-cols-2">
+          <h2 className="text-4xl font-headline font-bold tracking-tight sm:text-5xl text-white uppercase text-center">What's New</h2>
+          <div className="mt-12 grid gap-6 md:grid-cols-2">
             {announcements.map((ann) => (
-              <Card key={ann.id} className="hover:shadow-lg transition-shadow">
+              <Card key={ann.id} className="hover:shadow-lg transition-shadow bg-card border-border">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-3">
                     <Megaphone className="w-6 h-6 text-accent" />
-                    {ann.title}
+                    <span className="text-xl font-semibold">{ann.title}</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -115,12 +113,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-background">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-headline font-bold tracking-tight text-center sm:text-4xl text-primary">From the Gallery</h2>
+          <h2 className="text-4xl font-headline font-bold tracking-tight text-center sm:text-5xl text-white uppercase">From the Gallery</h2>
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {galleryImages.map((image) => (
-              <div key={image.id} className="relative aspect-square group overflow-hidden rounded-lg">
+              <div key={image.id} className="relative aspect-square group overflow-hidden rounded-lg border-2 border-transparent hover:border-primary transition-all">
                 <Image
                   src={image.imageUrl}
                   alt={image.description}
@@ -128,15 +126,15 @@ export default function Home() {
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                   data-ai-hint={image.imageHint}
                 />
-                <div className="absolute inset-0 bg-black/40" />
+                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors" />
                 <div className="absolute bottom-0 left-0 p-4">
-                  <p className="text-primary-foreground font-semibold">{image.caption}</p>
+                  <p className="text-primary-foreground font-semibold text-lg">{image.caption}</p>
                 </div>
               </div>
             ))}
           </div>
-           <div className="text-center mt-8">
-              <Button asChild>
+           <div className="text-center mt-12">
+              <Button asChild size="lg">
                 <Link href="/gallery">View Full Gallery <ArrowRight className="ml-2 h-4 w-4" /></Link>
               </Button>
             </div>

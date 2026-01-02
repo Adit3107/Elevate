@@ -13,11 +13,11 @@ const navLinks = [
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 py-2 pl-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 py-2 pl-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center px-4 md:px-6">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="hidden font-bold sm:inline-block font-headline">
+            <span className="text-2xl font-bold sm:inline-block font-headline uppercase tracking-wider">
               Elevate
             </span>
           </Link>
@@ -26,7 +26,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="transition-colors hover:text-foreground/80 text-foreground/60"
+                className="transition-colors hover:text-foreground text-foreground/60"
               >
                 {link.label}
               </Link>
@@ -45,16 +45,16 @@ export default function Header() {
               <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="left">
+          <SheetContent side="left" className="bg-background">
             <Link href="/" className="mr-6 flex items-center space-x-2 mb-6">
-              <span className="font-bold font-headline">Elevate</span>
+              <span className="font-bold font-headline uppercase tracking-wider text-2xl">Elevate</span>
             </Link>
             <nav className="flex flex-col space-y-4">
               {navLinks.map(link => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="transition-colors hover:text-foreground/80 text-foreground/60"
+                  className="transition-colors hover:text-foreground text-foreground/60"
                 >
                   {link.label}
                 </Link>
