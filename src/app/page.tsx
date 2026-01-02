@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -58,7 +59,7 @@ export default function Home() {
             <Card className="text-center bg-card border-border hover:border-primary hover:-translate-y-2 transition-transform duration-300">
               <CardHeader>
                 <VolleyballIcon className="w-16 h-16 mx-auto text-primary" />
-                <CardTitle className="mt-4 text-2xl font-headline uppercase">Volleyball</CardTitle>
+                <CardTitle className="mt-4 text-2xl font-headline uppercase text-muted-foreground">Volleyball</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">Spike your way to victory in the classic court challenge.</p>
@@ -67,7 +68,7 @@ export default function Home() {
             <Card className="text-center bg-card border-border hover:border-primary hover:-translate-y-2 transition-transform duration-300">
               <CardHeader>
                 <BasketballIcon className="w-16 h-16 mx-auto text-primary" />
-                <CardTitle className="mt-4 text-2xl font-headline uppercase">Basketball</CardTitle>
+                <CardTitle className="mt-4 text-2xl font-headline uppercase text-muted-foreground">Basketball</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">Dribble, shoot, and score in this fast-paced test of teamwork.</p>
@@ -76,7 +77,7 @@ export default function Home() {
             <Card className="text-center bg-card border-border hover:border-primary hover:-translate-y-2 transition-transform duration-300">
               <CardHeader>
                 <CarromIcon className="w-16 h-16 mx-auto text-primary" />
-                <CardTitle className="mt-4 text-2xl font-headline uppercase">Carrom</CardTitle>
+                <CardTitle className="mt-4 text-2xl font-headline uppercase text-muted-foreground">Carrom</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">Test your precision and strategy in the classic tabletop game.</p>
