@@ -22,7 +22,7 @@ export default {
         code: ['Rajdhani', 'monospace'],
       },
       letterSpacing: {
-        headline: '0.025em',
+        headline: '0.05em',
       },
       colors: {
         background: 'hsl(var(--background))',

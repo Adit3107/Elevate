@@ -33,11 +33,12 @@ export default function Header() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "transition-colors hover:text-accent",
-                    isActive ? "text-ring" : "text-foreground/60"
+                    "transition-colors hover:text-foreground relative",
+                    isActive ? "text-foreground" : "text-foreground/60"
                   )}
                 >
                   {link.label}
+                  {isActive && <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-ring" />}
                 </Link>
               );
             })}
@@ -64,7 +65,7 @@ export default function Header() {
                  <Link
                   key={link.href}
                   href={link.href}
-                  className="transition-colors hover:text-accent text-foreground/60"
+                  className="transition-colors hover:text-foreground text-foreground/60"
                 >
                   {link.label}
                 </Link>
