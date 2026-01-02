@@ -8,7 +8,6 @@ import {
   GalleryVertical,
   LayoutDashboard,
   Medal,
-  PanelLeft,
   PanelLeftClose,
   PanelRightClose,
   Swords,
@@ -65,12 +64,6 @@ export default function AdminLayout({
               </Link>
           </div>
            <nav className="flex flex-col items-start gap-4 px-4 sm:py-5">
-            <Button onClick={() => setIsCollapsed(!isCollapsed)} variant="ghost" size="icon" className={cn('absolute right-4 top-4 hidden sm:flex', isCollapsed ? '' : 'hidden' )}>
-              <PanelRightClose className="h-5 w-5" />
-            </Button>
-            <Button onClick={() => setIsCollapsed(!isCollapsed)} variant="ghost" size="icon" className={cn('absolute right-4 top-4 hidden sm:flex', isCollapsed ? 'hidden' : '' )}>
-              <PanelLeftClose className="h-5 w-5" />
-            </Button>
             {navLinks.map(({ href, label, icon: Icon }) => {
               const isActive =
                 href === '/admin'
@@ -106,6 +99,28 @@ export default function AdminLayout({
               );
             })}
           </nav>
+            <div className="mt-auto flex flex-col items-start gap-4 px-4 sm:py-5">
+                <Tooltip delayDuration={0}>
+                    <TooltipTrigger asChild>
+                        <Button
+                            onClick={() => setIsCollapsed(!isCollapsed)}
+                            variant="ghost"
+                            className={cn('w-full', isCollapsed ? 'justify-center' : 'justify-start')}
+                            aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                        >
+                            {isCollapsed ? <PanelRightClose className="h-4 w-4" /> : <PanelLeftClose className={cn(isCollapsed ? '' : 'mr-2', 'h-4 w-4')} />}
+                            <span className={cn(isCollapsed ? 'hidden' : 'inline-block')}>
+                                Collapse
+                            </span>
+                        </Button>
+                    </TooltipTrigger>
+                    {isCollapsed && (
+                        <TooltipContent side="right">
+                            {isCollapsed ? 'Expand' : 'Collapse'}
+                        </TooltipContent>
+                    )}
+                </Tooltip>
+            </div>
         </aside>
         <div
           className={cn(

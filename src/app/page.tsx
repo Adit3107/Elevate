@@ -39,7 +39,7 @@ export default function Home() {
             </h1>
             <div className="w-1/3 h-1 bg-primary mt-2 mb-4"></div>
             <p className="font-body text-xl md:text-2xl text-gray-300 tracking-wider font-semibold mt-2">
-              Rise. Compete. Conquer.
+              Rise Above All
             </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Button asChild size="lg">
