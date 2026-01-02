@@ -33,7 +33,7 @@ export default function Home() {
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
         <div className="relative h-full flex flex-col items-center justify-center text-center p-4">
-            <h1 className="font-headline text-7xl md:text-9xl font-extrabold tracking-tight text-white uppercase" style={{ WebkitTextStroke: '2px hsl(var(--primary))', textShadow: '0 0 15px hsl(var(--primary)), 0 0 30px hsl(var(--accent)), 0 0 45px hsl(var(--ring))' }}>
+            <h1 className="font-headline text-7xl md:text-9xl font-extrabold text-white uppercase" style={{ WebkitTextStroke: '2px hsl(var(--primary))' }}>
               ELEVATE 2026
             </h1>
             <p className="font-body text-2xl md:text-4xl text-gray-200 tracking-wider font-semibold mt-2">
@@ -55,7 +55,7 @@ export default function Home() {
 
       <section className="bg-background py-20 px-4 sm:px-6 lg:px-8 border-y-2 border-border">
         <div className="max-w-7xl mx-auto">
-           <h2 className="text-4xl font-headline font-bold tracking-tight text-center sm:text-5xl text-white uppercase">Compete Across Three Sports</h2>
+           <h2 className="text-4xl font-headline font-bold text-center sm:text-5xl text-white uppercase">Compete Across Three Sports</h2>
              <div className="mt-12 grid gap-8 md:grid-cols-3">
             <Card className="text-center bg-card/80 border-2 border-border hover:border-primary hover:-translate-y-2 transition-transform duration-300">
               <CardHeader>
@@ -91,7 +91,7 @@ export default function Home() {
 
       <section className="bg-secondary py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-headline font-bold tracking-tight sm:text-5xl text-white uppercase text-center">What's New</h2>
+          <h2 className="text-4xl font-headline font-bold sm:text-5xl text-white uppercase text-center">What's New</h2>
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {announcements.map((ann) => (
               <Card key={ann.id} className="hover:shadow-lg transition-shadow bg-card border-border">
@@ -115,7 +115,7 @@ export default function Home() {
 
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-headline font-bold tracking-tight text-center sm:text-5xl text-white uppercase">From the Gallery</h2>
+          <h2 className="text-4xl font-headline font-bold text-center sm:text-5xl text-white uppercase">From the Gallery</h2>
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {galleryImages.map((image) => (
               <div key={image.id} className="relative aspect-square group overflow-hidden rounded-lg border-2 border-transparent hover:border-primary transition-all">

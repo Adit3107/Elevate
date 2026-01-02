@@ -21,6 +21,9 @@ export default {
         headline: ['Anton', 'sans-serif'],
         code: ['Rajdhani', 'monospace'],
       },
+      letterSpacing: {
+        headline: '0.025em',
+      },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
