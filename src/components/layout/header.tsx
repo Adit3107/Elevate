@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 const navLinks = [
   { href: '/teams', label: 'Teams' },
@@ -12,6 +14,8 @@ const navLinks = [
 ];
 
 export default function Header() {
+  const pathname = usePathname();
+  
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 py-2 pl-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center px-4 md:px-6">
@@ -22,15 +26,21 @@ export default function Header() {
             </span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
-            {navLinks.map(link => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="transition-colors hover:text-foreground text-foreground/60"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map(link => {
+              const isActive = pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "transition-colors hover:text-accent",
+                    isActive ? "text-ring" : "text-foreground/60"
+                  )}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
 
@@ -51,10 +61,10 @@ export default function Header() {
             </Link>
             <nav className="flex flex-col space-y-4">
               {navLinks.map(link => (
-                <Link
+                 <Link
                   key={link.href}
                   href={link.href}
-                  className="transition-colors hover:text-foreground text-foreground/60"
+                  className="transition-colors hover:text-accent text-foreground/60"
                 >
                   {link.label}
                 </Link>
@@ -64,7 +74,7 @@ export default function Header() {
         </Sheet>
         
         <div className="flex flex-1 items-center justify-end space-x-2">
-          {/* We'll add user-specific buttons here later using Clerk */}
+          {/* We'll add user-specific buttons here later */}
           <Button asChild>
             <Link href="/sign-in">Login</Link>
           </Button>

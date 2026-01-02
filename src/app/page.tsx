@@ -33,7 +33,7 @@ export default function Home() {
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
         <div className="relative h-full flex flex-col items-center justify-center text-center p-4">
-            <h1 className="font-headline text-7xl md:text-9xl font-extrabold tracking-tight text-white uppercase" style={{ WebkitTextStroke: '2px hsl(var(--primary))', textShadow: '0 0 15px hsl(var(--primary))' }}>
+            <h1 className="font-headline text-7xl md:text-9xl font-extrabold tracking-tight text-white uppercase" style={{ WebkitTextStroke: '2px hsl(var(--primary))', textShadow: '0 0 15px hsl(var(--primary)), 0 0 30px hsl(var(--accent)), 0 0 45px hsl(var(--ring))' }}>
               ELEVATE 2026
             </h1>
             <p className="font-body text-2xl md:text-4xl text-gray-200 tracking-wider font-semibold mt-2">
