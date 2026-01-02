@@ -8,6 +8,7 @@ import {
   GalleryVertical,
   LayoutDashboard,
   Medal,
+  PanelLeft,
   PanelLeftClose,
   PanelRightClose,
   Swords,
@@ -49,19 +50,27 @@ export default function AdminLayout({
             isCollapsed ? 'w-16' : 'w-64'
           )}
         >
-          <nav className="flex flex-col items-start gap-4 px-4 sm:py-5">
-            <Link
-              href="/admin"
-              className={cn(
-                'group flex h-9 w-full shrink-0 items-center justify-start gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:text-base',
-                isCollapsed ? 'px-2' : 'px-3'
-              )}
-            >
-              <LayoutDashboard className="h-5 w-5 transition-all group-hover:scale-110" />
-              <span className={cn(isCollapsed ? 'hidden' : '')}>
-                Admin Panel
-              </span>
-            </Link>
+          <div className={cn('flex items-center border-b', isCollapsed ? 'h-[65px] justify-center' : 'h-[65px] justify-between px-6')}>
+              <Link
+                href="/admin"
+                className={cn(
+                  'group flex items-center gap-2 rounded-full text-lg font-semibold text-foreground',
+                  isCollapsed ? 'justify-center' : ''
+                )}
+              >
+                <LayoutDashboard className="h-6 w-6 text-primary transition-all group-hover:scale-110" />
+                <span className={cn(isCollapsed ? 'hidden' : '')}>
+                  Admin Panel
+                </span>
+              </Link>
+          </div>
+           <nav className="flex flex-col items-start gap-4 px-4 sm:py-5">
+            <Button onClick={() => setIsCollapsed(!isCollapsed)} variant="ghost" size="icon" className={cn('absolute right-4 top-4 hidden sm:flex', isCollapsed ? '' : 'hidden' )}>
+              <PanelRightClose className="h-5 w-5" />
+            </Button>
+            <Button onClick={() => setIsCollapsed(!isCollapsed)} variant="ghost" size="icon" className={cn('absolute right-4 top-4 hidden sm:flex', isCollapsed ? 'hidden' : '' )}>
+              <PanelLeftClose className="h-5 w-5" />
+            </Button>
             {navLinks.map(({ href, label, icon: Icon }) => {
               const isActive =
                 href === '/admin'
@@ -96,19 +105,6 @@ export default function AdminLayout({
                 </Tooltip>
               );
             })}
-          </nav>
-          <nav className="mt-auto flex flex-col items-start gap-4 px-4 sm:py-5">
-             <Tooltip delayDuration={0}>
-                <TooltipTrigger asChild>
-                    <Button onClick={() => setIsCollapsed(!isCollapsed)} variant="ghost" className={cn( 'w-full', isCollapsed ? 'justify-center' : 'justify-start' )}>
-                        {isCollapsed ? <PanelRightClose className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4 mr-2" />}
-                        <span className={cn(isCollapsed ? 'hidden' : 'inline-block')}>Collapse</span>
-                    </Button>
-                </TooltipTrigger>
-                {isCollapsed && (
-                    <TooltipContent side="right">Expand</TooltipContent>
-                )}
-            </Tooltip>
           </nav>
         </aside>
         <div

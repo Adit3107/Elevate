@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import {
   Accordion,
   AccordionContent,
@@ -11,7 +12,7 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 
-const dummyTeams = {
+const initialTeams = {
   volleyball: [
     { id: 1, name: 'State University', captain: 'Alex Ray', registeredAt: new Date('2026-06-01T10:00:00Z'), transactionId: 'TXN123456789', verified: true },
     { id: 2, name: 'City College', captain: 'Ben Carter', registeredAt: new Date('2026-06-02T11:30:00Z'), transactionId: 'TXN987654321', verified: false },
@@ -29,8 +30,58 @@ const dummyTeams = {
   ],
 };
 
+type Sport = keyof typeof initialTeams;
+type Team = (typeof initialTeams)[Sport][0];
+
 
 export default function ManageTeamsPage() {
+    const [teamsData, setTeamsData] = useState(initialTeams);
+
+  const handleVerificationChange = (sport: Sport, teamId: number, newVerifiedState: boolean) => {
+    // This function will be responsible for updating the backend when it's integrated.
+    // For now, it just updates the local state.
+    setTeamsData(prevData => {
+      const updatedSportTeams = prevData[sport].map(team =>
+        team.id === teamId ? { ...team, verified: newVerifiedState } : team
+      );
+      return { ...prevData, [sport]: updatedSportTeams };
+    });
+  };
+
+  const renderTeamTable = (sport: Sport) => (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Team Name</TableHead>
+          <TableHead>Captain Name</TableHead>
+          <TableHead>Date of Register</TableHead>
+          <TableHead>Transaction ID</TableHead>
+          <TableHead className="text-right">Verification</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {teamsData[sport].map((team: Team) => (
+          <TableRow key={team.id}>
+            <TableCell className="font-medium">{team.name}</TableCell>
+            <TableCell>{team.captain}</TableCell>
+            <TableCell>{format(new Date(team.registeredAt), "PPP")}</TableCell>
+            <TableCell>
+              <Badge variant="outline">{team.transactionId}</Badge>
+            </TableCell>
+            <TableCell className="text-right">
+              <Switch
+                id={`verification-${sport}-${team.id}`}
+                checked={team.verified}
+                onCheckedChange={(checked) => handleVerificationChange(sport, team.id, checked)}
+                aria-label="Verification status"
+              />
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+
   return (
     <Card>
       <CardHeader>
@@ -39,99 +90,14 @@ export default function ManageTeamsPage() {
       </CardHeader>
       <CardContent>
         <Accordion type="single" collapsible className="w-full" defaultValue='volleyball'>
-          <AccordionItem value="volleyball">
-            <AccordionTrigger className="text-lg font-semibold">Volleyball</AccordionTrigger>
-            <AccordionContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Team Name</TableHead>
-                    <TableHead>Captain Name</TableHead>
-                    <TableHead>Date of Register</TableHead>
-                    <TableHead>Transaction ID</TableHead>
-                    <TableHead className="text-right">Verification</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {dummyTeams.volleyball.map((team) => (
-                    <TableRow key={team.id}>
-                      <TableCell className="font-medium">{team.name}</TableCell>
-                      <TableCell>{team.captain}</TableCell>
-                      <TableCell>{format(team.registeredAt, "PPP")}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{team.transactionId}</Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Switch id={`verification-${team.id}`} checked={team.verified} onCheckedChange={() => { /* Handle change */ }} aria-label="Verification status"/>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="basketball">
-            <AccordionTrigger className="text-lg font-semibold">Basketball</AccordionTrigger>
-            <AccordionContent>
-               <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Team Name</TableHead>
-                    <TableHead>Captain Name</TableHead>
-                    <TableHead>Date of Register</TableHead>
-                    <TableHead>Transaction ID</TableHead>
-                    <TableHead className="text-right">Verification</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {dummyTeams.basketball.map((team) => (
-                    <TableRow key={team.id}>
-                      <TableCell className="font-medium">{team.name}</TableCell>
-                      <TableCell>{team.captain}</TableCell>
-                      <TableCell>{format(team.registeredAt, "PPP")}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{team.transactionId}</Badge>
-                      </TableCell>
-                       <TableCell className="text-right">
-                        <Switch id={`verification-basketball-${team.id}`} checked={team.verified} onCheckedChange={() => { /* Handle change */ }} aria-label="Verification status"/>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="carrom">
-            <AccordionTrigger className="text-lg font-semibold">Carrom</AccordionTrigger>
-            <AccordionContent>
-               <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Team Name</TableHead>
-                    <TableHead>Captain Name</TableHead>
-                    <TableHead>Date of Register</TableHead>
-                    <TableHead>Transaction ID</TableHead>
-                    <TableHead className="text-right">Verification</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {dummyTeams.carrom.map((team) => (
-                    <TableRow key={team.id}>
-                      <TableCell className="font-medium">{team.name}</TableCell>
-                      <TableCell>{team.captain}</TableCell>
-                      <TableCell>{format(team.registeredAt, "PPP")}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{team.transactionId}</Badge>
-                      </TableCell>
-                       <TableCell className="text-right">
-                        <Switch id={`verification-carrom-${team.id}`} checked={team.verified} onCheckedChange={() => { /* Handle change */ }} aria-label="Verification status"/>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </AccordionContent>
-          </AccordionItem>
+          {(Object.keys(teamsData) as Sport[]).map((sport) => (
+             <AccordionItem value={sport} key={sport}>
+                <AccordionTrigger className="text-lg font-semibold capitalize">{sport}</AccordionTrigger>
+                <AccordionContent>
+                    {renderTeamTable(sport)}
+                </AccordionContent>
+            </AccordionItem>
+          ))}
         </Accordion>
       </CardContent>
     </Card>
