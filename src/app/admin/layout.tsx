@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import {
   Bell,
-  GalleryVertical,
+  ClipboardList,
   LayoutDashboard,
   Medal,
   PanelLeftClose,
@@ -29,7 +29,7 @@ const navLinks = [
   { href: '/admin/fixtures', label: 'Fixtures', icon: Swords },
   { href: '/admin/results', label: 'Results', icon: Medal },
   { href: '/admin/announcements', label: 'Announcements', icon: Bell },
-  { href: '/admin/gallery', label: 'Gallery', icon: GalleryVertical },
+  { href: '/admin/registrations', label: 'Registrations', icon: ClipboardList },
 ];
 
 export default function AdminLayout({
@@ -50,20 +50,20 @@ export default function AdminLayout({
           )}
         >
           <div className={cn('flex items-center border-b', isCollapsed ? 'h-[65px] justify-center' : 'h-[65px] justify-between px-6')}>
-              <Link
-                href="/admin"
-                className={cn(
-                  'group flex items-center gap-2 rounded-full text-lg font-semibold text-foreground',
-                  isCollapsed ? 'justify-center' : ''
-                )}
-              >
-                <LayoutDashboard className="h-6 w-6 text-primary transition-all group-hover:scale-110" />
-                <span className={cn(isCollapsed ? 'hidden' : '')}>
-                  Admin Panel
-                </span>
-              </Link>
+            <Link
+              href="/admin"
+              className={cn(
+                'group flex items-center gap-2 rounded-full text-lg font-semibold text-foreground',
+                isCollapsed ? 'justify-center' : ''
+              )}
+            >
+              <LayoutDashboard className="h-6 w-6 text-primary transition-all group-hover:scale-110" />
+              <span className={cn(isCollapsed ? 'hidden' : '')}>
+                Admin Panel
+              </span>
+            </Link>
           </div>
-           <nav className="flex flex-col items-start gap-4 px-4 sm:py-5">
+          <nav className="flex flex-col items-start gap-4 px-4 sm:py-5">
             {navLinks.map(({ href, label, icon: Icon }) => {
               const isActive =
                 href === '/admin'
@@ -99,28 +99,28 @@ export default function AdminLayout({
               );
             })}
           </nav>
-            <div className="mt-auto flex flex-col items-start gap-4 px-4 sm:py-5">
-                <Tooltip delayDuration={0}>
-                    <TooltipTrigger asChild>
-                        <Button
-                            onClick={() => setIsCollapsed(!isCollapsed)}
-                            variant="ghost"
-                            className={cn('w-full', isCollapsed ? 'justify-center' : 'justify-start')}
-                            aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-                        >
-                            {isCollapsed ? <PanelRightClose className="h-4 w-4" /> : <PanelLeftClose className={cn(isCollapsed ? '' : 'mr-2', 'h-4 w-4')} />}
-                            <span className={cn(isCollapsed ? 'hidden' : 'inline-block')}>
-                                Collapse
-                            </span>
-                        </Button>
-                    </TooltipTrigger>
-                    {isCollapsed && (
-                        <TooltipContent side="right">
-                            {isCollapsed ? 'Expand' : 'Collapse'}
-                        </TooltipContent>
-                    )}
-                </Tooltip>
-            </div>
+          <div className="mt-auto flex flex-col items-start gap-4 px-4 sm:py-5">
+            <Tooltip delayDuration={0}>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={() => setIsCollapsed(!isCollapsed)}
+                  variant="ghost"
+                  className={cn('w-full', isCollapsed ? 'justify-center' : 'justify-start')}
+                  aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                >
+                  {isCollapsed ? <PanelRightClose className="h-4 w-4" /> : <PanelLeftClose className={cn(isCollapsed ? '' : 'mr-2', 'h-4 w-4')} />}
+                  <span className={cn(isCollapsed ? 'hidden' : 'inline-block')}>
+                    Collapse
+                  </span>
+                </Button>
+              </TooltipTrigger>
+              {isCollapsed && (
+                <TooltipContent side="right">
+                  {isCollapsed ? 'Expand' : 'Collapse'}
+                </TooltipContent>
+              )}
+            </Tooltip>
+          </div>
         </aside>
         <div
           className={cn(

@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import {
   Accordion,
   AccordionContent,
@@ -8,96 +9,158 @@ import {
 } from '@/components/ui/accordion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
-import { format } from 'date-fns';
+import { getAllVolleyballTeams, getAllBasketballTeams, getAllCarromTeams, type TeamRegistration } from '@/actions/admin';
 
-const initialTeams = {
-  volleyball: [
-    { id: 1, name: 'State University', captain: 'Alex Ray', registeredAt: new Date('2026-06-01T10:00:00Z'), transactionId: 'TXN123456789', verified: true },
-    { id: 2, name: 'City College', captain: 'Ben Carter', registeredAt: new Date('2026-06-02T11:30:00Z'), transactionId: 'TXN987654321', verified: false },
-    { id: 3, name: 'Tech Institute', captain: 'Casey Jones', registeredAt: new Date('2026-06-03T09:00:00Z'), transactionId: 'TXN555555555', verified: true },
-  ],
-  basketball: [
-    { id: 1, name: 'Metro University', captain: 'Dylan Smith', registeredAt: new Date('2026-06-01T14:00:00Z'), transactionId: 'TXN112233445', verified: false },
-    { id: 2, name: 'Community College', captain: 'Evan Williams', registeredAt: new Date('2026-06-02T16:45:00Z'), transactionId: 'TXN667788990', verified: true },
-    { id: 3, name: 'Arts Academy', captain: 'Finn Brown', registeredAt: new Date('2026-06-04T12:00:00Z'), transactionId: 'TXN314159265', verified: false },
-  ],
-  carrom: [
-    { id: 1, name: 'Science College', captain: 'Gale Hawthorne', registeredAt: new Date('2026-06-03T18:00:00Z'), transactionId: 'TXN271828182', verified: true },
-    { id: 2, name: 'Business School', captain: 'Harry Potter', registeredAt: new Date('2026-06-04T20:00:00Z'), transactionId: 'TXN161803398', verified: true },
-    { id: 3, name: 'Liberal Arts U', captain: 'Ian Wright', registeredAt: new Date('2026-06-05T13:15:00Z'), transactionId: 'TXN738905609', verified: false },
-  ],
-};
-
-type Sport = keyof typeof initialTeams;
-type Team = (typeof initialTeams)[Sport][0];
-
+type CategoryFilter = 'all' | 'men' | 'women';
 
 export default function ManageTeamsPage() {
-    const [teamsData, setTeamsData] = useState(initialTeams);
+  const [volleyballTeams, setVolleyballTeams] = useState<TeamRegistration[]>([]);
+  const [basketballTeams, setBasketballTeams] = useState<TeamRegistration[]>([]);
+  const [carromTeams, setCarromTeams] = useState<TeamRegistration[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
 
-  const handleVerificationChange = (sport: Sport, teamId: number, newVerifiedState: boolean) => {
-    // This function will be responsible for updating the backend when it's integrated.
-    // For now, it just updates the local state.
-    setTeamsData(prevData => {
-      const updatedSportTeams = prevData[sport].map(team =>
-        team.id === teamId ? { ...team, verified: newVerifiedState } : team
-      );
-      return { ...prevData, [sport]: updatedSportTeams };
-    });
+  useEffect(() => {
+    loadTeams();
+  }, []);
+
+  async function loadTeams() {
+    setLoading(true);
+    const [vb, bb, cr] = await Promise.all([
+      getAllVolleyballTeams(),
+      getAllBasketballTeams(),
+      getAllCarromTeams(),
+    ]);
+    setVolleyballTeams(vb);
+    setBasketballTeams(bb);
+    setCarromTeams(cr);
+    setLoading(false);
+  }
+
+  const filterTeamsByCategory = (teams: TeamRegistration[]) => {
+    if (categoryFilter === 'all') return teams;
+    return teams.filter(team => team.category.toLowerCase() === categoryFilter);
   };
 
-  const renderTeamTable = (sport: Sport) => (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Team Name</TableHead>
-          <TableHead>Captain Name</TableHead>
-          <TableHead>Date of Register</TableHead>
-          <TableHead>Transaction ID</TableHead>
-          <TableHead className="text-right">Verification</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {teamsData[sport].map((team: Team) => (
-          <TableRow key={team.id}>
-            <TableCell className="font-medium">{team.name}</TableCell>
-            <TableCell>{team.captain}</TableCell>
-            <TableCell>{format(new Date(team.registeredAt), "PPP")}</TableCell>
-            <TableCell>
-              <Badge variant="outline">{team.transactionId}</Badge>
-            </TableCell>
-            <TableCell className="text-right">
-              <Switch
-                id={`verification-${sport}-${team.id}`}
-                checked={team.verified}
-                onCheckedChange={(checked) => handleVerificationChange(sport, team.id, checked)}
-                aria-label="Verification status"
-              />
-            </TableCell>
+  const renderTeamTable = (teams: TeamRegistration[]) => {
+    const filteredTeams = filterTeamsByCategory(teams);
+
+    return (
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Team Name</TableHead>
+            <TableHead>Captain Name</TableHead>
+            <TableHead>Category</TableHead>
+            <TableHead className="text-right">Verification Status</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
+        </TableHeader>
+        <TableBody>
+          {filteredTeams.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
+                No teams registered yet
+              </TableCell>
+            </TableRow>
+          ) : (
+            filteredTeams.map((team) => (
+              <TableRow key={team.id}>
+                <TableCell className="font-medium">{team.teamName}</TableCell>
+                <TableCell>{team.captainName}</TableCell>
+                <TableCell>
+                  <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium capitalize">
+                    {team.category}
+                  </span>
+                </TableCell>
+                <TableCell className="text-right">
+                  <Badge variant={team.isVerified ? "default" : "secondary"}>
+                    {team.isVerified ? "Verified" : "Pending"}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
+        </TableBody>
+      </Table>
+    );
+  };
+
+  if (loading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Manage Teams</CardTitle>
+          <CardDescription>View and manage all registered teams for the tournament.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-center text-muted-foreground">Loading teams...</p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>Manage Teams</CardTitle>
         <CardDescription>View and manage all registered teams for the tournament.</CardDescription>
+        <div className="flex gap-2 mt-4">
+          <button
+            onClick={() => setCategoryFilter('all')}
+            className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${categoryFilter === 'all'
+                ? 'bg-primary text-primary-foreground shadow-md'
+                : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+              }`}
+          >
+            All
+          </button>
+          <button
+            onClick={() => setCategoryFilter('men')}
+            className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${categoryFilter === 'men'
+                ? 'bg-primary text-primary-foreground shadow-md'
+                : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+              }`}
+          >
+            Men
+          </button>
+          <button
+            onClick={() => setCategoryFilter('women')}
+            className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${categoryFilter === 'women'
+                ? 'bg-primary text-primary-foreground shadow-md'
+                : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+              }`}
+          >
+            Women
+          </button>
+        </div>
       </CardHeader>
       <CardContent>
         <Accordion type="single" collapsible className="w-full" defaultValue='volleyball'>
-          {(Object.keys(teamsData) as Sport[]).map((sport) => (
-             <AccordionItem value={sport} key={sport}>
-                <AccordionTrigger className="text-lg font-semibold capitalize">{sport}</AccordionTrigger>
-                <AccordionContent>
-                    {renderTeamTable(sport)}
-                </AccordionContent>
-            </AccordionItem>
-          ))}
+          <AccordionItem value="volleyball">
+            <AccordionTrigger className="text-lg font-semibold capitalize">
+              Volleyball ({volleyballTeams.length})
+            </AccordionTrigger>
+            <AccordionContent>
+              {renderTeamTable(volleyballTeams)}
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="basketball">
+            <AccordionTrigger className="text-lg font-semibold capitalize">
+              Basketball ({basketballTeams.length})
+            </AccordionTrigger>
+            <AccordionContent>
+              {renderTeamTable(basketballTeams)}
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="carrom">
+            <AccordionTrigger className="text-lg font-semibold capitalize">
+              Carrom ({carromTeams.length})
+            </AccordionTrigger>
+            <AccordionContent>
+              {renderTeamTable(carromTeams)}
+            </AccordionContent>
+          </AccordionItem>
         </Accordion>
       </CardContent>
     </Card>

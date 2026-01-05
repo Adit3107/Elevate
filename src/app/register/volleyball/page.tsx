@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -30,10 +31,11 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { ArrowLeft, IndianRupee } from 'lucide-react';
+import { ArrowLeft, IndianRupee, Loader2 } from 'lucide-react';
 import VolleyballIcon from '@/components/icons/volleyball';
 import QRCode from 'react-qr-code';
 import { useToast } from '@/hooks/use-toast';
+import { registerVolleyballTeam } from '@/actions/register';
 
 const fees = {
   men: 2000,
@@ -63,7 +65,9 @@ type FormData = z.infer<typeof formSchema>;
 
 export default function VolleyballRegistrationPage() {
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -75,18 +79,51 @@ export default function VolleyballRegistrationPage() {
       transactionId: '',
     },
   });
-  
+
   const category = form.watch('category');
 
-  function onSubmit(data: FormData) {
+  async function onSubmit(data: FormData) {
     if (step === 1) {
       setStep(2);
-    } else {
-       toast({
-         title: 'Registration Submitted!',
-         description:
-           'Your team registration has been submitted successfully.',
-       });
+      return;
+    }
+
+    setIsSubmitting(true);
+    // Use an empty initial state as required by useFormState pattern if we were using it, 
+    // but here we are calling the action directly from client component for simplicity with react-hook-form
+    // Note: To strictly follow server action patterns we might use useFormState, but direct call is also fine for simple forms
+
+    // We need to pass a dummy dummy state because of the signature of the server action designed for useFormState
+    const dummyState = { success: false, message: '' };
+
+    try {
+      const result = await registerVolleyballTeam(dummyState, data);
+
+      if (result.success) {
+        toast({
+          title: 'Registration Submitted!',
+          description: result.message,
+        });
+        // Redirect to home after 2 seconds
+        setTimeout(() => router.push('/'), 2000);
+        // Reset form or redirect?
+        // form.reset();
+        // setStep(1);
+      } else {
+        toast({
+          title: 'Registration Failed',
+          description: result.message || result.error,
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -253,7 +290,7 @@ export default function VolleyballRegistrationPage() {
                       Scan with any UPI app to pay.
                     </p>
                   </div>
-                  
+
                   <FormField
                     control={form.control}
                     name="transactionId"
@@ -272,14 +309,22 @@ export default function VolleyballRegistrationPage() {
                   />
 
                   <div className="flex justify-between">
-                    <Button variant="outline" onClick={() => setStep(1)} type="button">
+                    <Button variant="outline" onClick={() => setStep(1)} type="button" disabled={isSubmitting}>
                       Back
                     </Button>
                     <Button
                       type="submit"
                       size="lg"
+                      disabled={isSubmitting}
                     >
-                      Submit Registration
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Submitting...
+                        </>
+                      ) : (
+                        'Submit Registration'
+                      )}
                     </Button>
                   </div>
                 </div>

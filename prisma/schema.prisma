@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model VolleyballTeam {
+  id             String   @id @default(uuid())
+  teamName       String
+  captainName    String
+  contactNo      String
+  altContactNo   String?
+  category       String   // men, women
+  transactionId  String?
+  userId         String   // Clerk User ID
+  isVerified     Boolean  @default(false)
+  createdAt      DateTime @default(now())
+}
+
+model BasketballTeam {
+  id             String   @id @default(uuid())
+  teamName       String
+  captainName    String
+  contactNo      String
+  altContactNo   String?
+  category       String   // men, women
+  transactionId  String?
+  userId         String   // Clerk User ID
+  isVerified     Boolean  @default(false)
+  createdAt      DateTime @default(now())
+}
+
+model CarromTeam {
+  id             String   @id @default(uuid())
+  teamName       String
+  captainName    String
+  contactNo      String
+  altContactNo   String?
+  category       String   // singles, doubles
+  transactionId  String?
+  userId         String   // Clerk User ID
+  isVerified     Boolean  @default(false)
+  createdAt      DateTime @default(now())
+}
