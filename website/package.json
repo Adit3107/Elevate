@@ -2,13 +2,16 @@
     "name": "elevate-website",
     "version": "0.1.0",
     "private": true,
+    "prisma": {
+        "schema": "../shared/prisma/schema.prisma"
+    },
     "scripts": {
         "dev": "next dev --turbopack",
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
         "typecheck": "tsc --noEmit",
-        "postinstall": "cd ../shared && npx prisma generate"
+        "postinstall": "npx prisma generate"
     },
     "dependencies": {
         "@clerk/nextjs": "^6.36.5",
