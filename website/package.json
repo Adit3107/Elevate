@@ -8,7 +8,7 @@
         "start": "next start",
         "lint": "next lint",
         "typecheck": "tsc --noEmit",
-        "postinstall": "prisma generate --schema=../shared/prisma/schema.prisma"
+        "postinstall": "cd ../shared && npx prisma generate"
     },
     "dependencies": {
         "@clerk/nextjs": "^6.36.5",
