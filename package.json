@@ -2,13 +2,15 @@
   "name": "elevate-monorepo",
   "version": "1.0.0",
   "private": true,
+  "workspaces": ["website", "admin", "shared"],
   "description": "Elevate monorepo with website and admin apps",
   "scripts": {
     "dev": "next dev --turbopack --port 9002",
     "build": "NODE_ENV=production next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "postinstall": "cd shared && npx prisma generate"
   },
   "prisma": {
     "schema": "shared/prisma/schema.prisma"
