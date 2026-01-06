@@ -6,8 +6,7 @@
     "dev": "next dev --turbopack --port 9002",
     "build": "NODE_ENV=production next build",
     "start": "next start",
-    "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "lint": "next lint"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
