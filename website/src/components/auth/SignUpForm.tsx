@@ -63,34 +63,14 @@ export default function SignUpForm() {
                 password: data.password,
             });
 
-            // Complete sign-up immediately without verification
+            // Check if sign-up is complete
             if (result.status === "complete") {
                 await setActive({ session: result.createdSessionId });
                 router.push("/");
-            } else if (result.status === "missing_requirements") {
-                // Force complete the sign-up
-                await signUp.update({
-                    unsafeMetadata: { skipVerification: true }
-                });
-                const updatedResult = await signUp.create({
-                    firstName: data.name.split(" ")[0] || data.name,
-                    lastName: data.name.split(" ").slice(1).join(" ") || "",
-                    emailAddress: data.email,
-                    password: data.password,
-                });
-                if (updatedResult.createdSessionId) {
-                    await setActive({ session: updatedResult.createdSessionId });
-                    router.push("/");
-                }
             } else {
-                // Try to force complete anyway
-                try {
-                    await setActive({ session: result.createdSessionId });
-                    router.push("/");
-                } catch {
-                    setAuthError("Account created but sign-in failed. Please try signing in manually.");
-                }
+                setAuthError("Sign-up could not be completed. Please try again.");
             }
+
         } catch (error: any) {
             console.error("Sign-up error:", error);
             setAuthError(
