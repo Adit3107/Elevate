@@ -28,10 +28,26 @@ import {
     KeyRound,
 } from "lucide-react";
 import { signInSchema } from "@/schemas/signInSchema";
-import {
-    forgotPasswordEmailSchema,
-    forgotPasswordResetSchema,
-} from "@/schemas/forgotPasswordSchema";
+
+// Schema for forgot password email step
+const forgotPasswordEmailSchema = z.object({
+    email: z.string().email("Please enter a valid email address"),
+});
+
+// Schema for reset password step
+const resetPasswordSchema = z.object({
+    code: z.string().min(6, "Verification code must be at least 6 characters"),
+    password: z
+        .string()
+        .min(8, "Password must be at least 8 characters")
+        .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+        .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+        .regex(/[0-9]/, "Password must contain at least one number"),
+    passwordConfirmation: z.string(),
+}).refine((data) => data.password === data.passwordConfirmation, {
+    message: "Passwords don't match",
+    path: ["passwordConfirmation"],
+});
 
 type FormState = "SIGN_IN" | "FORGOT_PASSWORD_EMAIL" | "FORGOT_PASSWORD_RESET";
 
@@ -45,11 +61,11 @@ export default function SignInForm() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [resetEmail, setResetEmail] = useState("");
 
-    // Sign In Form
+    // Sign-in form
     const {
-        register: registerSignIn,
-        handleSubmit: handleSubmitSignIn,
-        formState: { errors: errorsSignIn },
+        register,
+        handleSubmit,
+        formState: { errors },
     } = useForm<z.infer<typeof signInSchema>>({
         resolver: zodResolver(signInSchema),
         defaultValues: {
@@ -58,30 +74,22 @@ export default function SignInForm() {
         },
     });
 
-    // Forgot Password Email Form
+    // Forgot password email form
     const {
         register: registerEmail,
         handleSubmit: handleSubmitEmail,
         formState: { errors: errorsEmail },
     } = useForm<z.infer<typeof forgotPasswordEmailSchema>>({
         resolver: zodResolver(forgotPasswordEmailSchema),
-        defaultValues: {
-            email: "",
-        },
     });
 
-    // Forgot Password Reset Form
+    // Reset password form
     const {
         register: registerReset,
         handleSubmit: handleSubmitReset,
         formState: { errors: errorsReset },
-    } = useForm<z.infer<typeof forgotPasswordResetSchema>>({
-        resolver: zodResolver(forgotPasswordResetSchema),
-        defaultValues: {
-            code: "",
-            password: "",
-            passwordConfirmation: "",
-        },
+    } = useForm<z.infer<typeof resetPasswordSchema>>({
+        resolver: zodResolver(resetPasswordSchema),
     });
 
     const onSignInSubmit = async (data: z.infer<typeof signInSchema>) => {
@@ -97,11 +105,14 @@ export default function SignInForm() {
             });
 
             if (result.status === "complete") {
+                if (!result.createdSessionId) {
+                    setAuthError("Sign-in completed but no session was created. Please try again.");
+                    return;
+                }
                 await setActive({ session: result.createdSessionId });
                 router.push("/");
             } else {
-                console.error("Sign-in incomplete:", result);
-                setAuthError("Sign-in could not be completed. Please try again.");
+                setAuthError("Sign-in could not be completed. Please check your credentials and try again.");
             }
         } catch (error: any) {
             console.error("Sign-in error:", error);
@@ -114,41 +125,32 @@ export default function SignInForm() {
         }
     };
 
-    const onEmailSubmit = async (
-        data: z.infer<typeof forgotPasswordEmailSchema>
-    ) => {
+    const onForgotPasswordEmailSubmit = async (data: z.infer<typeof forgotPasswordEmailSchema>) => {
         if (!isLoaded || !signIn) return;
 
         setIsSubmitting(true);
         setAuthError(null);
 
         try {
-            const result = await signIn.create({
-                strategy: "reset_password_email_code",
+            await signIn.create({
                 identifier: data.email,
+                strategy: "reset_password_email_code",
             });
 
-            if (result.status === "needs_first_factor") {
-                setResetEmail(data.email);
-                setFormState("FORGOT_PASSWORD_RESET");
-            } else {
-                console.error("Unexpected status:", result.status);
-                setAuthError("Failed to initiate password reset. Please try again.");
-            }
+            setResetEmail(data.email);
+            setFormState("FORGOT_PASSWORD_RESET");
         } catch (error: any) {
-            console.error("Email request error:", error);
+            console.error("Forgot password error:", error);
             setAuthError(
                 error.errors?.[0]?.message ||
-                "Failed to send reset code. Please check the email and try again."
+                "Failed to send reset code. Please try again."
             );
         } finally {
             setIsSubmitting(false);
         }
     };
 
-    const onResetSubmit = async (
-        data: z.infer<typeof forgotPasswordResetSchema>
-    ) => {
+    const onResetPasswordSubmit = async (data: z.infer<typeof resetPasswordSchema>) => {
         if (!isLoaded || !signIn) return;
 
         setIsSubmitting(true);
@@ -165,11 +167,10 @@ export default function SignInForm() {
                 await setActive({ session: result.createdSessionId });
                 router.push("/");
             } else {
-                console.error("Password reset incomplete:", result);
                 setAuthError("Password reset could not be completed. Please try again.");
             }
         } catch (error: any) {
-            console.error("Password reset error:", error);
+            console.error("Reset password error:", error);
             setAuthError(
                 error.errors?.[0]?.message ||
                 "Failed to reset password. Please check the code and try again."
@@ -182,14 +183,13 @@ export default function SignInForm() {
     // Render: Forgot Password - Email Input
     if (formState === "FORGOT_PASSWORD_EMAIL") {
         return (
-            <Card className="w-full max-w-md border border-border bg-card shadow-xl">
+            <Card className="w-full max-w-md border border-border bg-card shadow-xl mx-4">
                 <CardHeader className="flex flex-col gap-1 items-center pb-2">
                     <CardTitle className="text-2xl font-bold text-foreground">
-                        Reset Password
+                        Forgot Password
                     </CardTitle>
                     <CardDescription className="text-muted-foreground text-center">
-                        Enter your email address and we'll send you a code to reset your
-                        password
+                        Enter your email to receive a verification code
                     </CardDescription>
                 </CardHeader>
 
@@ -203,16 +203,16 @@ export default function SignInForm() {
                         </div>
                     )}
 
-                    <form onSubmit={handleSubmitEmail(onEmailSubmit)} className="space-y-6">
+                    <form onSubmit={handleSubmitEmail(onForgotPasswordEmailSubmit)} className="space-y-6">
                         <div className="space-y-2">
                             <label
-                                htmlFor="reset-email"
+                                htmlFor="email"
                                 className="text-sm font-medium text-foreground"
                             >
                                 Email
                             </label>
                             <EnhancedInput
-                                id="reset-email"
+                                id="email"
                                 type="email"
                                 placeholder="your.email@example.com"
                                 startContent={<Mail className="h-4 w-4 text-muted-foreground" />}
@@ -246,26 +246,21 @@ export default function SignInForm() {
                         <ArrowLeft className="h-4 w-4 mr-2" />
                         Back to Sign In
                     </Button>
-
-                    <div className="text-xs text-muted-foreground text-center">
-                        Secured by <span className="font-semibold">Clerk</span>
-                    </div>
                 </CardFooter>
             </Card>
         );
     }
 
-    // Render: Forgot Password - Reset Input
+    // Render: Forgot Password - Reset Password
     if (formState === "FORGOT_PASSWORD_RESET") {
         return (
-            <Card className="w-full max-w-md border border-border bg-card shadow-xl">
+            <Card className="w-full max-w-md border border-border bg-card shadow-xl mx-4">
                 <CardHeader className="flex flex-col gap-1 items-center pb-2">
                     <CardTitle className="text-2xl font-bold text-foreground">
-                        New Password
+                        Reset Password
                     </CardTitle>
                     <CardDescription className="text-muted-foreground text-center">
-                        Enter the code sent to <strong>{resetEmail}</strong> and your new
-                        password
+                        Enter the code sent to <strong>{resetEmail}</strong> and your new password
                     </CardDescription>
                 </CardHeader>
 
@@ -279,7 +274,7 @@ export default function SignInForm() {
                         </div>
                     )}
 
-                    <form onSubmit={handleSubmitReset(onResetSubmit)} className="space-y-6">
+                    <form onSubmit={handleSubmitReset(onResetPasswordSubmit)} className="space-y-6">
                         <div className="space-y-2">
                             <label
                                 htmlFor="code"
@@ -291,9 +286,7 @@ export default function SignInForm() {
                                 id="code"
                                 type="text"
                                 placeholder="Enter 6-digit code"
-                                startContent={
-                                    <KeyRound className="h-4 w-4 text-muted-foreground" />
-                                }
+                                startContent={<KeyRound className="h-4 w-4 text-muted-foreground" />}
                                 isInvalid={!!errorsReset.code}
                                 errorMessage={errorsReset.code?.message}
                                 {...registerReset("code")}
@@ -378,26 +371,22 @@ export default function SignInForm() {
                     <Button
                         variant="ghost"
                         onClick={() => {
-                            setFormState("FORGOT_PASSWORD_EMAIL");
+                            setFormState("SIGN_IN");
                             setAuthError(null);
                         }}
                         className="text-muted-foreground hover:text-foreground"
                     >
                         <ArrowLeft className="h-4 w-4 mr-2" />
-                        Back
+                        Back to Sign In
                     </Button>
-
-                    <div className="text-xs text-muted-foreground text-center">
-                        Secured by <span className="font-semibold">Clerk</span>
-                    </div>
                 </CardFooter>
             </Card>
         );
     }
 
-    // Render: Sign In Form (Default)
+    // Render: Sign In
     return (
-        <Card className="w-full max-w-md border border-border bg-card shadow-xl">
+        <Card className="w-full max-w-md border border-border bg-card shadow-xl mx-4">
             <CardHeader className="flex flex-col gap-1 items-center pb-2">
                 <CardTitle className="text-2xl font-bold text-foreground">
                     Welcome Back
@@ -417,7 +406,7 @@ export default function SignInForm() {
                     </div>
                 )}
 
-                <form onSubmit={handleSubmitSignIn(onSignInSubmit)} className="space-y-6">
+                <form onSubmit={handleSubmit(onSignInSubmit)} className="space-y-6">
                     <div className="space-y-2">
                         <label
                             htmlFor="identifier"
@@ -430,14 +419,14 @@ export default function SignInForm() {
                             type="email"
                             placeholder="your.email@example.com"
                             startContent={<Mail className="h-4 w-4 text-muted-foreground" />}
-                            isInvalid={!!errorsSignIn.identifier}
-                            errorMessage={errorsSignIn.identifier?.message}
-                            {...registerSignIn("identifier")}
+                            isInvalid={!!errors.identifier}
+                            errorMessage={errors.identifier?.message}
+                            {...register("identifier")}
                         />
                     </div>
 
                     <div className="space-y-2">
-                        <div className="flex justify-between items-center">
+                        <div className="flex items-center justify-between">
                             <label
                                 htmlFor="password"
                                 className="text-sm font-medium text-foreground"
@@ -446,11 +435,8 @@ export default function SignInForm() {
                             </label>
                             <button
                                 type="button"
-                                onClick={() => {
-                                    setFormState("FORGOT_PASSWORD_EMAIL");
-                                    setAuthError(null);
-                                }}
-                                className="text-xs text-primary hover:underline font-medium"
+                                onClick={() => setFormState("FORGOT_PASSWORD_EMAIL")}
+                                className="text-sm text-primary hover:underline"
                             >
                                 Forgot password?
                             </button>
@@ -473,9 +459,9 @@ export default function SignInForm() {
                                     )}
                                 </button>
                             }
-                            isInvalid={!!errorsSignIn.password}
-                            errorMessage={errorsSignIn.password?.message}
-                            {...registerSignIn("password")}
+                            isInvalid={!!errors.password}
+                            errorMessage={errors.password?.message}
+                            {...register("password")}
                         />
                     </div>
 
@@ -501,10 +487,6 @@ export default function SignInForm() {
                         Sign up
                     </Link>
                 </p>
-
-                <div className="text-xs text-muted-foreground text-center">
-                    Secured by <span className="font-semibold">Clerk</span>
-                </div>
             </CardFooter>
         </Card>
     );

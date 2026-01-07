@@ -37,10 +37,7 @@ import QRCode from 'react-qr-code';
 import { useToast } from '@/hooks/use-toast';
 import { registerCarromTeam } from '@/actions/register';
 
-const fees = {
-    singles: 300,
-    doubles: 500,
-};
+const REGISTRATION_FEE = 250; // Same fee for all categories
 
 const formSchema = z.object({
     teamName: z.string().min(3, {
@@ -56,7 +53,10 @@ const formSchema = z.object({
         message: 'Please enter a valid 10-digit alternate contact number.',
     }).optional().or(z.literal('')),
     category: z.enum(['singles', 'doubles'], {
-        required_error: 'Please select a category.',
+        required_error: 'Please select a game type.',
+    }),
+    gender: z.enum(['men', 'women'], {
+        required_error: 'Please select a gender category.',
     }),
     transactionId: z.string().optional(),
 });
@@ -138,7 +138,7 @@ export default function CarromRegistrationPage() {
     const upiId = 'your-upi-id@okhdfcbank';
     const upiName = 'Elevate Org';
 
-    const fee = category ? fees[category] : 0;
+    const fee = REGISTRATION_FEE;
     const upiUrl = `upi://pay?pa=${upiId}&pn=${upiName}&am=${fee}&cu=INR&tn=ElevateCarromRegistration`;
 
     return (
@@ -254,19 +254,43 @@ export default function CarromRegistrationPage() {
                                                 name="category"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Category</FormLabel>
+                                                        <FormLabel>Game Type</FormLabel>
                                                         <Select
                                                             onValueChange={field.onChange}
                                                             defaultValue={field.value}
                                                         >
                                                             <FormControl>
                                                                 <SelectTrigger>
-                                                                    <SelectValue placeholder="Select category" />
+                                                                    <SelectValue placeholder="Select game type" />
                                                                 </SelectTrigger>
                                                             </FormControl>
                                                             <SelectContent>
                                                                 <SelectItem value="singles">Singles</SelectItem>
                                                                 <SelectItem value="doubles">Doubles</SelectItem>
+                                                            </SelectContent>
+                                                        </Select>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <FormField
+                                                control={form.control}
+                                                name="gender"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>Gender Category</FormLabel>
+                                                        <Select
+                                                            onValueChange={field.onChange}
+                                                            defaultValue={field.value}
+                                                        >
+                                                            <FormControl>
+                                                                <SelectTrigger>
+                                                                    <SelectValue placeholder="Select gender category" />
+                                                                </SelectTrigger>
+                                                            </FormControl>
+                                                            <SelectContent>
+                                                                <SelectItem value="men">Men</SelectItem>
+                                                                <SelectItem value="women">Women</SelectItem>
                                                             </SelectContent>
                                                         </Select>
                                                         <FormMessage />

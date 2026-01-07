@@ -11,7 +11,7 @@ import { getRelativeTimeString } from '@/lib/date-utils';
 
 export default async function Home() {
   const result = await getAnnouncements();
-  const announcements = result.success && result.data ? result.data.slice(0, 2) : []; // Show only first 2
+  const announcements = result.success && result.data ? result.data.slice(0, 1) : []; // Show only first 1
 
   return (
     <div className="flex flex-col">
@@ -116,7 +116,7 @@ export default async function Home() {
       <section className="bg-secondary py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl font-headline font-bold sm:text-5xl text-white uppercase text-center tracking-wider">What's New</h2>
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
+          <div className="mt-12 max-w-2xl mx-auto">
             {announcements.map((ann: any) => (
               <Card key={ann.id} className="hover:shadow-lg transition-shadow bg-card border-border">
                 <CardHeader>

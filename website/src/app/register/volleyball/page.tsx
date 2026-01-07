@@ -39,7 +39,7 @@ import { registerVolleyballTeam } from '@/actions/register';
 
 const fees = {
   men: 2000,
-  women: 1500,
+  women: 2000,
 };
 
 const formSchema = z.object({
