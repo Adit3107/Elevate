@@ -104,6 +104,9 @@ export default function SignInForm() {
                 password: data.password,
             });
 
+            console.log("Sign-in result status:", result.status);
+            console.log("Sign-in result:", result);
+
             if (result.status === "complete") {
                 if (!result.createdSessionId) {
                     setAuthError("Sign-in completed but no session was created. Please try again.");
@@ -112,10 +115,13 @@ export default function SignInForm() {
                 await setActive({ session: result.createdSessionId });
                 router.push("/");
             } else {
-                setAuthError("Sign-in could not be completed. Please check your credentials and try again.");
+                // Show detailed status for debugging
+                console.error("Sign-in incomplete. Status:", result.status);
+                setAuthError(`Sign-in could not be completed. Status: ${result.status}. Please check your credentials and try again.`);
             }
         } catch (error: any) {
             console.error("Sign-in error:", error);
+            console.error("Error details:", error.errors);
             setAuthError(
                 error.errors?.[0]?.message ||
                 "An error occurred during sign-in. Please try again."
