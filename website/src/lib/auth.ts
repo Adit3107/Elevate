@@ -1,9 +1,10 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import { SignJWT, jwtVerify } from 'jose';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+const secret = new TextEncoder().encode(JWT_SECRET);
 
-export interface JWTPayload {
+export interface AuthPayload {
     userId: string;
     email: string;
 }
@@ -27,20 +28,28 @@ export async function comparePasswords(
 }
 
 /**
- * Generate a JWT token
+ * Generate a JWT token using jose
  */
-export function generateToken(payload: JWTPayload): string {
-    return jwt.sign(payload, JWT_SECRET, {
-        expiresIn: '7d', // Token expires in 7 days
-    });
+export async function generateToken(payload: AuthPayload): Promise<string> {
+    const token = await new SignJWT({ ...payload })
+        .setProtectedHeader({ alg: 'HS256' })
+        .setIssuedAt()
+        .setExpirationTime('7d') // Token expires in 7 days
+        .sign(secret);
+
+    return token;
 }
 
 /**
- * Verify and decode a JWT token
+ * Verify and decode a JWT token using jose
  */
-export function verifyToken(token: string): JWTPayload | null {
+export async function verifyToken(token: string): Promise<AuthPayload | null> {
     try {
-        return jwt.verify(token, JWT_SECRET) as JWTPayload;
+        const { payload } = await jwtVerify(token, secret);
+        return {
+            userId: payload.userId as string,
+            email: payload.email as string,
+        };
     } catch (error) {
         return null;
     }

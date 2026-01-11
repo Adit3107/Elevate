@@ -23,7 +23,8 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
             return null;
         }
 
-        const payload = verifyToken(token);
+        // Verify token
+        const payload = await verifyToken(token);
 
         if (!payload) {
             return null;
