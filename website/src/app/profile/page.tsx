@@ -1,39 +1,63 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useUser } from '@clerk/nextjs';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { SignOutButton } from '@clerk/nextjs';
 import { getUserRegistrations, type UserRegistration } from '@/actions/profile';
 import { format } from 'date-fns';
 import { LogOut, Mail, User, Trophy } from 'lucide-react';
 
 type CategoryFilter = 'all' | 'men' | 'women';
 
+type UserData = {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+};
+
 export default function ProfilePage() {
-    const { user, isLoaded } = useUser();
+    const router = useRouter();
+    const [user, setUser] = useState<UserData | null>(null);
     const [registrations, setRegistrations] = useState<UserRegistration[]>([]);
     const [loading, setLoading] = useState(true);
     const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
 
     useEffect(() => {
-        if (isLoaded && user) {
-            loadRegistrations();
-        }
-    }, [isLoaded, user]);
+        loadUserData();
+    }, []);
 
-    async function loadRegistrations() {
-        if (!user) return;
-        setLoading(true);
-        const data = await getUserRegistrations(user.id);
-        setRegistrations(data);
-        setLoading(false);
+    async function loadUserData() {
+        try {
+            // Fetch user data
+            const userResponse = await fetch('/api/auth/me');
+            if (!userResponse.ok) {
+                router.push('/sign-in');
+                return;
+            }
+            const userData = await userResponse.json();
+            setUser(userData.user);
+
+            // Fetch registrations
+            const regs = await getUserRegistrations(userData.user.id);
+            setRegistrations(regs);
+        } catch (error) {
+            console.error('Error loading user data:', error);
+            router.push('/sign-in');
+        } finally {
+            setLoading(false);
+        }
     }
 
-    if (!isLoaded || loading) {
+    const handleSignOut = async () => {
+        await fetch('/api/auth/signout', { method: 'POST' });
+        router.push('/');
+        router.refresh();
+    };
+
+    if (loading) {
         return (
             <div className="container mx-auto max-w-4xl py-12 px-4">
                 <p className="text-center text-muted-foreground">Loading...</p>
@@ -42,7 +66,6 @@ export default function ProfilePage() {
     }
 
     if (!user) {
-        redirect('/sign-in');
         return null;
     }
 
@@ -65,31 +88,33 @@ export default function ProfilePage() {
                                 <User className="h-5 w-5 text-muted-foreground" />
                                 <div>
                                     <p className="text-sm text-muted-foreground">First Name</p>
-                                    <p className="font-medium">{user.firstName || 'N/A'}</p>
+                                    <p className="font-medium">{user.firstName}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-3">
                                 <User className="h-5 w-5 text-muted-foreground" />
                                 <div>
                                     <p className="text-sm text-muted-foreground">Last Name</p>
-                                    <p className="font-medium">{user.lastName || 'N/A'}</p>
+                                    <p className="font-medium">{user.lastName}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-3 md:col-span-2">
                                 <Mail className="h-5 w-5 text-muted-foreground" />
                                 <div>
                                     <p className="text-sm text-muted-foreground">Email</p>
-                                    <p className="font-medium">{user.emailAddresses[0]?.emailAddress || 'N/A'}</p>
+                                    <p className="font-medium">{user.email}</p>
                                 </div>
                             </div>
                         </div>
                         <div className="pt-4">
-                            <SignOutButton>
-                                <Button variant="destructive" className="w-full md:w-auto">
-                                    <LogOut className="mr-2 h-4 w-4" />
-                                    Logout
-                                </Button>
-                            </SignOutButton>
+                            <Button
+                                variant="destructive"
+                                className="w-full md:w-auto"
+                                onClick={handleSignOut}
+                            >
+                                <LogOut className="mr-2 h-4 w-4" />
+                                Logout
+                            </Button>
                         </div>
                     </CardContent>
                 </Card>

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSignUp } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { z } from "zod";
@@ -30,7 +29,6 @@ import { signUpSchema } from "@/schemas/signUpSchema";
 
 export default function SignUpForm() {
     const router = useRouter();
-    const { signUp, isLoaded, setActive } = useSignUp();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [authError, setAuthError] = useState<string | null>(null);
     const [showPassword, setShowPassword] = useState(false);
@@ -49,34 +47,31 @@ export default function SignUpForm() {
     });
 
     const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
-        if (!isLoaded || !signUp) return;
-
         setIsSubmitting(true);
         setAuthError(null);
 
         try {
-            // Create the user account
-            const result = await signUp.create({
-                firstName: data.name.split(" ")[0] || data.name,
-                lastName: data.name.split(" ").slice(1).join(" ") || "",
-                emailAddress: data.email,
-                password: data.password,
+            const response = await fetch('/api/auth/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
             });
 
-            // Check if sign-up is complete
-            if (result.status === "complete") {
-                await setActive({ session: result.createdSessionId });
-                router.push("/");
-            } else {
-                setAuthError("Sign-up could not be completed. Please try again.");
+            const result = await response.json();
+
+            if (!response.ok) {
+                setAuthError(result.error || 'An error occurred during sign-up');
+                return;
             }
 
+            // Redirect to home page on success
+            router.push('/');
+            router.refresh();
         } catch (error: any) {
             console.error("Sign-up error:", error);
-            setAuthError(
-                error.errors?.[0]?.message ||
-                "An error occurred during sign-up. Please try again."
-            );
+            setAuthError("An error occurred during sign-up. Please try again.");
         } finally {
             setIsSubmitting(false);
         }
@@ -104,22 +99,42 @@ export default function SignUpForm() {
                 )}
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                    <div className="space-y-2">
-                        <label
-                            htmlFor="name"
-                            className="text-sm font-medium text-foreground"
-                        >
-                            Name
-                        </label>
-                        <EnhancedInput
-                            id="name"
-                            type="text"
-                            placeholder="John Doe"
-                            startContent={<User className="h-4 w-4 text-muted-foreground" />}
-                            isInvalid={!!errors.name}
-                            errorMessage={errors.name?.message}
-                            {...register("name")}
-                        />
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <label
+                                htmlFor="firstName"
+                                className="text-sm font-medium text-foreground"
+                            >
+                                First Name
+                            </label>
+                            <EnhancedInput
+                                id="firstName"
+                                type="text"
+                                placeholder="John"
+                                startContent={<User className="h-4 w-4 text-muted-foreground" />}
+                                isInvalid={!!errors.firstName}
+                                errorMessage={errors.firstName?.message}
+                                {...register("firstName")}
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label
+                                htmlFor="lastName"
+                                className="text-sm font-medium text-foreground"
+                            >
+                                Last Name
+                            </label>
+                            <EnhancedInput
+                                id="lastName"
+                                type="text"
+                                placeholder="Doe"
+                                startContent={<User className="h-4 w-4 text-muted-foreground" />}
+                                isInvalid={!!errors.lastName}
+                                errorMessage={errors.lastName?.message}
+                                {...register("lastName")}
+                            />
+                        </div>
                     </div>
 
                     <div className="space-y-2">

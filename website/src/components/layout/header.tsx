@@ -1,13 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '../ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
 import { Menu } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '../../lib/utils';
-import { SignedIn, SignedOut } from '@clerk/nextjs';
 
 const navLinks = [
   { href: '/teams', label: 'Teams' },
@@ -19,7 +18,23 @@ const navLinks = [
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Check if user is authenticated
+    fetch('/api/auth/me')
+      .then(res => {
+        setIsAuthenticated(res.ok);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setIsAuthenticated(false);
+        setIsLoading(false);
+      });
+  }, [pathname]);
 
   return (
     <header className="sticky top-0 z-50 w-full py-2 pl-4 backdrop-blur-md">
@@ -85,16 +100,19 @@ export default function Header() {
         </Sheet>
 
         <div className="flex flex-1 items-center justify-end space-x-2">
-          <SignedOut>
-            <Button asChild>
-              <Link href="/sign-in">Login</Link>
-            </Button>
-          </SignedOut>
-          <SignedIn>
-            <Button asChild variant="outline">
-              <Link href="/profile">Profile</Link>
-            </Button>
-          </SignedIn>
+          {!isLoading && (
+            <>
+              {!isAuthenticated ? (
+                <Button asChild>
+                  <Link href="/sign-in">Login</Link>
+                </Button>
+              ) : (
+                <Button asChild variant="outline">
+                  <Link href="/profile">Profile</Link>
+                </Button>
+              )}
+            </>
+          )}
         </div>
       </div>
     </header>
