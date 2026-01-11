@@ -2,8 +2,9 @@
 
 import { z } from 'zod';
 import { prisma } from '../lib/prisma';
-import { currentUser } from '@clerk/nextjs/server';
+import { verifyToken } from '../lib/auth';
 import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
 
 const formSchema = z.object({
   teamName: z.string().min(3),
@@ -20,13 +21,25 @@ export type RegistrationState = {
   error?: string;
 };
 
+async function getCurrentUserId(): Promise<string | null> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('auth-token')?.value;
+
+  if (!token) {
+    return null;
+  }
+
+  const payload = verifyToken(token);
+  return payload?.userId || null;
+}
+
 export async function registerVolleyballTeam(
   prevState: RegistrationState,
   formData: z.infer<typeof formSchema>
 ): Promise<RegistrationState> {
-  const user = await currentUser();
+  const userId = await getCurrentUserId();
 
-  if (!user) {
+  if (!userId) {
     return { success: false, message: 'User not authenticated', error: 'User not authenticated' };
   }
 
@@ -34,7 +47,7 @@ export async function registerVolleyballTeam(
     await prisma.volleyballTeam.create({
       data: {
         ...formData,
-        userId: user.id,
+        userId,
       },
     });
 
@@ -50,9 +63,9 @@ export async function registerBasketballTeam(
   prevState: RegistrationState,
   formData: z.infer<typeof formSchema>
 ): Promise<RegistrationState> {
-  const user = await currentUser();
+  const userId = await getCurrentUserId();
 
-  if (!user) {
+  if (!userId) {
     return { success: false, message: 'User not authenticated', error: 'User not authenticated' };
   }
 
@@ -60,7 +73,7 @@ export async function registerBasketballTeam(
     await prisma.basketballTeam.create({
       data: {
         ...formData,
-        userId: user.id,
+        userId,
       },
     });
 
@@ -76,9 +89,9 @@ export async function registerCarromTeam(
   prevState: RegistrationState,
   formData: z.infer<typeof formSchema>
 ): Promise<RegistrationState> {
-  const user = await currentUser();
+  const userId = await getCurrentUserId();
 
-  if (!user) {
+  if (!userId) {
     return { success: false, message: 'User not authenticated', error: 'User not authenticated' };
   }
 
@@ -86,7 +99,7 @@ export async function registerCarromTeam(
     await prisma.carromTeam.create({
       data: {
         ...formData,
-        userId: user.id,
+        userId,
       },
     });
 
