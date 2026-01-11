@@ -40,6 +40,7 @@ model CarromTeam {
   contactNo      String
   altContactNo   String?
   category       String   // singles, doubles
+  gender         String   // men, women
   transactionId  String?
   userId         String   // Clerk User ID
   isVerified     Boolean  @default(false)

@@ -10,6 +10,39 @@ node_modules
 !.yarn/releases
 !.yarn/versions
 
+# website folder
+/website/node_modules
+/website/.next
+/website/out
+/website/build
+/website/.env
+/website/.env.local
+/website/.env.development.local
+/website/.env.test.local
+/website/.env.production.local
+/website/coverage
+/website/*.tsbuildinfo
+/website/.vercel
+
+# admin folder
+/admin/node_modules
+/admin/.next
+/admin/out
+/admin/build
+/admin/.env
+/admin/.env.local
+/admin/.env.development.local
+/admin/.env.test.local
+/admin/.env.production.local
+/admin/coverage
+/admin/*.tsbuildinfo
+/admin/.vercel
+/admin/.clerk/.tmp
+
+# shared folder
+/shared/node_modules
+/shared/.cache
+
 # testing
 coverage
 

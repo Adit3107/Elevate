@@ -38,8 +38,8 @@ import { useToast } from '@/hooks/use-toast';
 import { registerBasketballTeam } from '@/actions/register';
 
 const fees = {
-    men: 2000,
-    women: 1500,
+    men: 2500,
+    women: 2500,
 };
 
 const formSchema = z.object({
